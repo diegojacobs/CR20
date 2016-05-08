@@ -1,6 +1,7 @@
 package classes;
 
-import java.util.*;
+import java.sql.Date;
+
 
 /**
 @author Diego Jacobs
@@ -27,7 +28,7 @@ public class Cliente {
 		this.segundoNombre = new String();
 		this.primerApellido = new String();
 		this.segundoApellido = new String();
-		this.nacimiento = new Date();
+		this.nacimiento = null;
 		this.locationID = -1;
 		this.contactoID = -1;
 		this.estadoID = -1;
@@ -139,6 +140,11 @@ public class Cliente {
 
 	public void setEstadoCivilID(int estadoCivilID) {
 		this.estadoCivilID = estadoCivilID;
+	}
+	
+	public String getNombreCompleto()
+	{
+		return this.primerNombre + " "+this.segundoNombre + " " + this.primerApellido+" " + this.segundoApellido;
 	}
 	
 }
