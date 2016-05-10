@@ -1,0 +1,448 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.2.14
+-- Dumped by pg_dump version 9.2.14
+-- Started on 2016-05-05 22:11:20
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 177 (class 3079 OID 11727)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1997 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 168 (class 1259 OID 33049)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cliente (
+    id integer NOT NULL,
+    primer_nombre text,
+    segundo_nombre text,
+    primer_apellido text,
+    segundo_apellido text,
+    fecha_de_nacimineto date,
+    location_id integer,
+    contact_id integer,
+    estado_id integer,
+    discount double precision,
+    image text,
+    genero boolean,
+    estado_civil_id integer
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 33081)
+-- Name: contact; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE contact (
+    id integer NOT NULL,
+    telefono integer,
+    email text,
+    twitter text
+);
+
+
+ALTER TABLE public.contact OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 33065)
+-- Name: estado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE estado (
+    id integer NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.estado OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 33277)
+-- Name: estado_civil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE estado_civil (
+    id integer NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.estado_civil OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 33089)
+-- Name: factura; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE factura (
+    id integer NOT NULL,
+    cliente_id integer,
+    pago_id integer,
+    fecha date,
+    cantidad integer,
+    total double precision
+);
+
+
+ALTER TABLE public.factura OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 33073)
+-- Name: location; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE location (
+    id integer NOT NULL,
+    ciudad text,
+    pais text,
+    zipcode integer,
+    direccion text
+);
+
+
+ALTER TABLE public.location OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 33094)
+-- Name: pago; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pago (
+    id integer NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.pago OWNER TO postgres;
+
+--
+-- TOC entry 169 (class 1259 OID 33057)
+-- Name: producto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE producto (
+    id integer NOT NULL,
+    precio double precision,
+    nombre text
+);
+
+
+ALTER TABLE public.producto OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 33257)
+-- Name: venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE venta (
+    id integer NOT NULL,
+    product_id integer,
+    cantidad integer,
+    total double precision,
+    factura_id integer
+);
+
+
+ALTER TABLE public.venta OWNER TO postgres;
+
+--
+-- TOC entry 1981 (class 0 OID 33049)
+-- Dependencies: 168
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cliente (id, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, fecha_de_nacimineto, location_id, contact_id, estado_id, discount, image, genero, estado_civil_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1985 (class 0 OID 33081)
+-- Dependencies: 172
+-- Data for Name: contact; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY contact (id, telefono, email, twitter) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1983 (class 0 OID 33065)
+-- Dependencies: 170
+-- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY estado (id, descripcion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1989 (class 0 OID 33277)
+-- Dependencies: 176
+-- Data for Name: estado_civil; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY estado_civil (id, descripcion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1986 (class 0 OID 33089)
+-- Dependencies: 173
+-- Data for Name: factura; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY factura (id, cliente_id, pago_id, fecha, cantidad, total) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1984 (class 0 OID 33073)
+-- Dependencies: 171
+-- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY location (id, ciudad, pais, zipcode, direccion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1987 (class 0 OID 33094)
+-- Dependencies: 174
+-- Data for Name: pago; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pago (id, descripcion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1982 (class 0 OID 33057)
+-- Dependencies: 169
+-- Data for Name: producto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY producto (id, precio, nombre) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1988 (class 0 OID 33257)
+-- Dependencies: 175
+-- Data for Name: venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY venta (id, product_id, cantidad, total, factura_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1848 (class 2606 OID 33056)
+-- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1856 (class 2606 OID 33306)
+-- Name: contact_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY contact
+    ADD CONSTRAINT contact_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 1858 (class 2606 OID 33088)
+-- Name: contact_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY contact
+    ADD CONSTRAINT contact_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1866 (class 2606 OID 33284)
+-- Name: estado_civil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estado_civil
+    ADD CONSTRAINT estado_civil_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1854 (class 2606 OID 33080)
+-- Name: location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY location
+    ADD CONSTRAINT location_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1862 (class 2606 OID 33101)
+-- Name: pago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pago
+    ADD CONSTRAINT pago_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1850 (class 2606 OID 33064)
+-- Name: product_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY producto
+    ADD CONSTRAINT product_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1860 (class 2606 OID 33093)
+-- Name: sale_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY factura
+    ADD CONSTRAINT sale_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1852 (class 2606 OID 33072)
+-- Name: state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estado
+    ADD CONSTRAINT state_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1864 (class 2606 OID 33261)
+-- Name: venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY venta
+    ADD CONSTRAINT venta_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1867 (class 2606 OID 33337)
+-- Name: cliente_contact_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_contact_id_fkey FOREIGN KEY (contact_id) REFERENCES contact(id);
+
+
+--
+-- TOC entry 1868 (class 2606 OID 33342)
+-- Name: cliente_estado_civil_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_estado_civil_id_fkey FOREIGN KEY (estado_civil_id) REFERENCES estado_civil(id);
+
+
+--
+-- TOC entry 1870 (class 2606 OID 33352)
+-- Name: cliente_estado_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_estado_id_fkey FOREIGN KEY (estado_id) REFERENCES estado(id);
+
+
+--
+-- TOC entry 1869 (class 2606 OID 33347)
+-- Name: cliente_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_location_id_fkey FOREIGN KEY (location_id) REFERENCES location(id);
+
+
+--
+-- TOC entry 1871 (class 2606 OID 33377)
+-- Name: factura_cliente_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY factura
+    ADD CONSTRAINT factura_cliente_id_fkey FOREIGN KEY (cliente_id) REFERENCES cliente(id);
+
+
+--
+-- TOC entry 1872 (class 2606 OID 33382)
+-- Name: factura_pago_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY factura
+    ADD CONSTRAINT factura_pago_id_fkey FOREIGN KEY (pago_id) REFERENCES pago(id);
+
+
+--
+-- TOC entry 1873 (class 2606 OID 33357)
+-- Name: venta_factura_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY venta
+    ADD CONSTRAINT venta_factura_id_fkey FOREIGN KEY (factura_id) REFERENCES factura(id);
+
+
+--
+-- TOC entry 1874 (class 2606 OID 33362)
+-- Name: venta_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY venta
+    ADD CONSTRAINT venta_product_id_fkey FOREIGN KEY (product_id) REFERENCES producto(id);
+
+
+--
+-- TOC entry 1996 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-05-05 22:11:21
+
+--
+-- PostgreSQL database dump complete
+--
+
