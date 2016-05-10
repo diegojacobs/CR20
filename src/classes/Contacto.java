@@ -17,21 +17,6 @@ public class Contacto {
 		this.twitter = new String();
 	}
 
-	public Contacto(int telefono, String email, String twitter) {
-		super();
-		this.telefono = telefono;
-		this.email = email;
-		this.twitter = twitter;
-	}
-
-	public Contacto(int id, int telefono, String email, String twitter) {
-		super();
-		this.id = id;
-		this.telefono = telefono;
-		this.email = email;
-		this.twitter = twitter;
-	}
-
 	public int getId() {
 		return id;
 	}
