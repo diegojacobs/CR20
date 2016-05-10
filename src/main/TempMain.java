@@ -1,7 +1,13 @@
-package classes;
+package main;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
+import classes.Contacto;
+import connectionDB.ContactoDB;
+import connectionDB.myConnection;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -19,6 +25,17 @@ public class TempMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+		//Connection to DataBase
+		myConnection connection = new myConnection("postgres","root");
+		Contacto contact = new Contacto(2,30526044,"diegojacobs95@gmail.com","diegojacobs95");
+		ContactoDB contactDB = new ContactoDB(contact, connection);
+	
+		//contactDB.insertContacto();
+		//contactDB.selectContacto();
+		//contactDB.selectAllContactos();
+		contactDB.deleteContacto();
+		//contactDB.updateContacto();
+		
 		//Traer tweets
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 	       cb.setDebugEnabled(true)
@@ -35,7 +52,7 @@ public class TempMain {
 	        List<Status> statusess = twitter.getHomeTimeline();
 	        for(Status status : statusess)
 	        {
-	        	if (status.getUser().getScreenName().equals("el_angelm"))
+	        	//if (status.getUser().getScreenName().equals("el_angelm"))
 	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
 	        }
 	          
