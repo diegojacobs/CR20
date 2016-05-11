@@ -7,6 +7,10 @@ public class main
     	
     	clienteGUI gui = new clienteGUI();
     	gui.setVisible(true);
+    	
+    	//contactGUI gui = new contactGUI();
+    	//gui.setVisible(true);
+    	
         
     }
     
