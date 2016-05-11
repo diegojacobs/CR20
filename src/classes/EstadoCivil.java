@@ -96,7 +96,7 @@ public class EstadoCivil {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String selectAllContactos()
+	public String selectAllEstadosCiviles()
 	{
 		Statement stmt = null;
 		
@@ -130,7 +130,7 @@ public class EstadoCivil {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String selectContacto()
+	public String selectEstadoCivil()
 	{
 		Statement stmt = null;
 		
@@ -168,7 +168,7 @@ public class EstadoCivil {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String insertContacto()
+	public String insertEstadoCivil()
 	{
 		Statement stmt = null;
 		try 
@@ -204,7 +204,7 @@ public class EstadoCivil {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String updateContacto()
+	public String updateEstadoCivil()
 	{
 		Statement stmt = null;
 		try 
@@ -235,7 +235,7 @@ public class EstadoCivil {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String deleteContacto()
+	public String deleteEstadoCivil()
 	{
        Statement stmt = null;
        try 
