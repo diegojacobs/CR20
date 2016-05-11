@@ -85,7 +85,7 @@ public class Estado {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String selectAllContactos()
+	public String selectAllEstados()
 	{
 		Statement stmt = null;
 		
@@ -119,7 +119,7 @@ public class Estado {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String selectContacto()
+	public String selectEstados()
 	{
 		Statement stmt = null;
 		
@@ -157,7 +157,7 @@ public class Estado {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String insertContacto()
+	public String insertEstados()
 	{
 		Statement stmt = null;
 		try 
@@ -193,7 +193,7 @@ public class Estado {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String updateContacto()
+	public String updateEstados()
 	{
 		Statement stmt = null;
 		try 
@@ -224,7 +224,7 @@ public class Estado {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String deleteContacto()
+	public String deleteEstados()
 	{
        Statement stmt = null;
        try 
