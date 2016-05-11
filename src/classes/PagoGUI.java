@@ -88,7 +88,7 @@ public class PagoGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PagoGUI() {
-		setTitle("Location");
+		setTitle("Pago");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
