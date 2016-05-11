@@ -1,12 +1,13 @@
 package main;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
 import classes.Contacto;
-import connectionDB.ContactoDB;
+import classes.Venta;
 import connectionDB.myConnection;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -27,13 +28,19 @@ public class TempMain {
 		
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
-		Contacto contact = new Contacto(2,30526044,"diegojacobs95@gmail.com","diegojacobs95");
-		ContactoDB contactDB = new ContactoDB(contact, connection);
+		Contacto contact = new Contacto(8,30526044,"diegojaco@gmail.com","diegojacobs",connection);
 	
-		//contactDB.insertContacto();
+		Venta sale = new Venta(1, 1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
+		
+		String text = sale.insertVenta();
+		
+		if (text == null)
+			System.out.println("Exito");
+		else
+			System.out.println(text);
 		//contactDB.selectContacto();
 		//contactDB.selectAllContactos();
-		contactDB.deleteContacto();
+		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
 		
 		//Traer tweets
