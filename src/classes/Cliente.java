@@ -383,6 +383,7 @@ public class Cliente {
 		    if (rs.next())
 		    {
 			    String id = Integer.toString(rs.getInt("id")+1);
+			    this.id = Integer.parseInt(id);
 			    String primern = this.getPrimerNombre();
 			    String segundon = this.getSegundoNombre();
 			    String primera = this.getPrimerApellido();
@@ -405,7 +406,32 @@ public class Cliente {
 						+ imagen + "', " + gen + ", " + estCID + ");";
 			    stmt.executeUpdate(sql);
 		    }
-		    
+		    else
+		    {
+		    	String id = Integer.toString(1);
+			    this.id = Integer.parseInt(id);
+			    String primern = this.getPrimerNombre();
+			    String segundon = this.getSegundoNombre();
+			    String primera = this.getPrimerApellido();
+			    String segundoa = this.getSegundoApellido();
+			    String fecha = this.getNacimiento().toString();
+			    String locID = Integer.toString(this.getLocationID());
+			    String conID = Integer.toString(this.getContactoID());
+			    String estID = Integer.toString(this.getEstadoID());
+			    String desc = Double.toString(this.getDescuento());
+			    String imagen = this.getImagen();
+			    String gen = Boolean.toString(this.isGenero());
+			    String estCID = Integer.toString(this.getEstadoCivilID());
+			    
+				 
+				String sql = "INSERT INTO cliente(id, primer_nombre, segundo_nombre, primer_apellido,"
+						+ "segundo_apellido, fecha_de_nacimineto, location_id, contacto_id, estado_id,"
+						+ "descuento, image, genero, estado_civil_id)    VALUES ("
+						+ id + ", '" + primern +"', '" + segundon + "', '" + primera + "', '" + segundoa + "', '" 
+						+ fecha + "', " + locID + ", " + conID +", " + estID + ", " + desc + ", '" 
+						+ imagen + "', " + gen + ", " + estCID + ");";
+			    stmt.executeUpdate(sql);
+		    }
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
