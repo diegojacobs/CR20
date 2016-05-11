@@ -11,6 +11,7 @@ import classes.LocationGUI;
 import classes.PagoGUI;
 import classes.Venta;
 import classes.VentaGUI;
+import classes.clienteGUI;
 import connectionDB.myConnection;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -31,8 +32,8 @@ public class TempMain {
 		
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
-		VentaGUI frame = new VentaGUI();
-		frame.setVisible(true);
+		clienteGUI gui = new clienteGUI();
+    	gui.setVisible(true);
 		
 		/*
 		
