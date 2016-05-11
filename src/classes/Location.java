@@ -127,7 +127,7 @@ public class Location {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String selectAllContactos()
+	public String selectAllLocations()
 	{
 		Statement stmt = null;
 		
@@ -164,7 +164,7 @@ public class Location {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String selectContacto()
+	public String selectLocation()
 	{
 		Statement stmt = null;
 		
@@ -208,7 +208,7 @@ public class Location {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String insertContacto()
+	public String insertLocation()
 	{
 		Statement stmt = null;
 		try 
@@ -247,7 +247,7 @@ public class Location {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String updateContacto()
+	public String updateLocation()
 	{
 		Statement stmt = null;
 		try 
@@ -281,7 +281,7 @@ public class Location {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
-	public String deleteContacto()
+	public String deleteLocation()
 	{
        Statement stmt = null;
        try 
