@@ -40,6 +40,18 @@ public class Venta {
 		this.dia = dia;
 		this.all = new ArrayList<Venta>();
 	}
+	
+	public Venta(int pagoID, int clienteID, int cantidad, double total,
+			Date dia, myConnection con) {
+		super();
+		this.pagoID = pagoID;
+		this.clienteID = clienteID;
+		this.cantidad = cantidad;
+		this.total = total;
+		this.dia = dia;
+		this.con = con.getCon();
+		this.all = new ArrayList<Venta>();
+	}
 
 	public Venta(int id, int pagoID, int clienteID, int cantidad, double total,
 			Date dia) {
@@ -217,16 +229,21 @@ public class Venta {
 		    System.out.println("Opened database successfully");
 		    stmt = this.con.createStatement();
 		    
-		    String id = Integer.toString(this.getId());
-			String clienteID = Integer.toString(this.getClienteID());
-			String pagoID = Integer.toString(this.getPagoID());
-			String cantidad = Integer.toString(this.getCantidad());
-			String total = Double.toString(this.getTotal());
-			String dia = this.getDia().toString();
-			 
-			String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
-		    stmt.executeUpdate(sql);
-		
+		    ResultSet rs = stmt.executeQuery( "SELECT id FROM venta WHERE id >= ALL (SELECT id FROM venta);" );
+		    
+		    if (rs.next())
+		    {
+			    String id = Integer.toString(rs.getInt("id")+1);
+				String clienteID = Integer.toString(this.getClienteID());
+				String pagoID = Integer.toString(this.getPagoID());
+				String cantidad = Integer.toString(this.getCantidad());
+				String total = Double.toString(this.getTotal());
+				String dia = this.getDia().toString();
+				 
+				String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
+			    stmt.executeUpdate(sql);
+		    }
+		    
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();

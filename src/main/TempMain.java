@@ -28,11 +28,11 @@ public class TempMain {
 		
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
-		Contacto contact = new Contacto(8,30526044,"diegojaco@gmail.com","diegojacobs",connection);
+		Contacto contact = new Contacto(30526044,"diego@gmail.com","diego",connection);
 	
 		Venta sale = new Venta(1, 1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
 		
-		String text = sale.insertVenta();
+		String text = contact.insertContacto();
 		
 		if (text == null)
 			System.out.println("Exito");

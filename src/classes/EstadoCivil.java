@@ -177,12 +177,17 @@ public class EstadoCivil {
 		    System.out.println("Opened database successfully");
 		    stmt = this.con.createStatement();
 		    
-		    String id = Integer.toString(this.getId());
-			String des = this.getDescripcion();
-			 
-			String sql = "INSERT INTO estado_civil (id, descripcion) " + "VALUES (" + id + ", '" + des +"' );";
-		    stmt.executeUpdate(sql);
-		
+		    ResultSet rs = stmt.executeQuery( "SELECT id FROM estado_civil WHERE id >= ALL (SELECT id FROM estado_civil);" );
+		    
+		    if (rs.next())
+		    {
+			    String id = Integer.toString(rs.getInt("id")+1);
+				String des = this.getDescripcion();
+				 
+				String sql = "INSERT INTO estado_civil (id, descripcion) " + "VALUES (" + id + ", '" + des +"' );";
+			    stmt.executeUpdate(sql);
+		    }
+		    
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
