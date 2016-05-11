@@ -207,6 +207,18 @@ public class Contacto {
 		    if (rs.next())
 		    {
 			    String id = Integer.toString(rs.getInt("id")+1);
+			    this.id = Integer.parseInt(id);
+				String email = this.getEmail();
+				String phone = Integer.toString(this.getTelefono());
+				String twitter = this.getTwitter();
+				 
+				String sql = "INSERT INTO contacto (id, telefono, email, twitter) " + "VALUES (" + id + "," + phone +", '" + email + "', '" + twitter + "');";
+			    stmt.executeUpdate(sql);
+		    }
+		    else
+		    {
+		    	String id = Integer.toString(1);
+			    this.id = Integer.parseInt(id);
 				String email = this.getEmail();
 				String phone = Integer.toString(this.getTelefono());
 				String twitter = this.getTwitter();

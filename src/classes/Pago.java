@@ -171,6 +171,16 @@ public class Pago {
 		    if (rs.next())
 		    {
 			    String id = Integer.toString(rs.getInt("id")+1);
+			    this.id = Integer.parseInt(id);
+				String des = this.getDescripcion();
+				 
+				String sql = "INSERT INTO pago (id, descripcion) " + "VALUES (" + id + ", '" + des +"' );";
+			    stmt.executeUpdate(sql);
+		    }
+		    else
+		    {
+		    	String id = Integer.toString(1);
+			    this.id = Integer.parseInt(id);
 				String des = this.getDescripcion();
 				 
 				String sql = "INSERT INTO pago (id, descripcion) " + "VALUES (" + id + ", '" + des +"' );";
