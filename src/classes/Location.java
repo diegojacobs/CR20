@@ -222,6 +222,7 @@ public class Location {
 		    if (rs.next())
 		    {
 			    String id = Integer.toString(rs.getInt("id")+1);
+			    this.id = Integer.parseInt(id);
 				String pais = this.getPais();
 				String code = Integer.toString(this.getCodigoPostal());
 				String ciudad = this.getCiudad();
@@ -230,7 +231,18 @@ public class Location {
 				String sql = "INSERT INTO location (id, zipcode, pais, ciudad, direccion) " + "VALUES (" + id + "," + code +", '" + pais + "', '" + ciudad + "', '"  + direccion + "');";
 			    stmt.executeUpdate(sql);
 		    }
-		    
+		    else
+		    {
+		    	String id = Integer.toString(rs.getInt("id")+1);
+			    this.id = Integer.parseInt(id);
+				String pais = this.getPais();
+				String code = Integer.toString(this.getCodigoPostal());
+				String ciudad = this.getCiudad();
+				String direccion = this.getDireccion();
+				 
+				String sql = "INSERT INTO location (id, zipcode, pais, ciudad, direccion) " + "VALUES (" + id + "," + code +", '" + pais + "', '" + ciudad + "', '"  + direccion + "');";
+			    stmt.executeUpdate(sql);
+		    }
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
