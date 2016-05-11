@@ -1,0 +1,421 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.2.14
+-- Dumped by pg_dump version 9.2.14
+-- Started on 2016-05-10 22:17:03
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 175 (class 3079 OID 11727)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1982 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 188 (class 1255 OID 33427)
+-- Name: editar_cliente(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_cliente() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.id IS NULL THEN
+            RAISE EXCEPTION 'ID de Cliente no puede ser null';
+        END IF;
+        IF NEW.id in (select id from cliente) THEN
+            RAISE EXCEPTION 'ID cliente ya existe';
+        END IF;
+        IF NEW.location_id not in (select id from location) THEN
+            RAISE EXCEPTION 'El id de dirección no hace referencia a ninguna direccion';
+        END IF;
+        IF NEW.contacto_id in (select id from contacto) THEN
+            RAISE EXCEPTION 'El id de contacto no hace referencia a ningun contacto';
+        END IF;
+        IF NEW.estado_id not in (select id from estado) THEN
+            RAISE EXCEPTION 'El id de estado no hace referencia a ningun estado';
+        END IF;
+        IF NEW.descuento < 0 THEN
+            RAISE EXCEPTION 'No puede existir un descuento menor a 0';
+        END IF;
+	IF NEW.estado_civil_id not in (select id from estado_civil) THEN
+            RAISE EXCEPTION 'El id de estado civil no hace referencia a ningun estado civil';
+        END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_cliente() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 168 (class 1259 OID 33049)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cliente (
+    id integer NOT NULL,
+    primer_nombre text,
+    segundo_nombre text,
+    primer_apellido text,
+    segundo_apellido text,
+    fecha_de_nacimineto date,
+    location_id integer,
+    contacto_id integer,
+    estado_id integer,
+    descuento double precision,
+    image text,
+    genero boolean,
+    estado_civil_id integer
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 33081)
+-- Name: contacto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE contacto (
+    id integer NOT NULL,
+    telefono integer,
+    email text,
+    twitter text
+);
+
+
+ALTER TABLE public.contacto OWNER TO postgres;
+
+--
+-- TOC entry 169 (class 1259 OID 33065)
+-- Name: estado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE estado (
+    id integer NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.estado OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 33277)
+-- Name: estado_civil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE estado_civil (
+    id integer NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.estado_civil OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 33073)
+-- Name: location; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE location (
+    id integer NOT NULL,
+    ciudad text,
+    pais text,
+    zipcode integer,
+    direccion text
+);
+
+
+ALTER TABLE public.location OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 33094)
+-- Name: pago; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pago (
+    id integer NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.pago OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 33257)
+-- Name: venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE venta (
+    id integer NOT NULL,
+    pago_id integer,
+    cantidad integer,
+    total double precision,
+    cliente_id integer,
+    dia date
+);
+
+
+ALTER TABLE public.venta OWNER TO postgres;
+
+--
+-- TOC entry 1968 (class 0 OID 33049)
+-- Dependencies: 168
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cliente (id, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, fecha_de_nacimineto, location_id, contacto_id, estado_id, descuento, image, genero, estado_civil_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1971 (class 0 OID 33081)
+-- Dependencies: 171
+-- Data for Name: contacto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY contacto (id, telefono, email, twitter) FROM stdin;
+6	30526044	diegojacobs@gmail.com	diegojacobs
+8	30526044	diegojaco@gmail.com	diegojacobs
+\.
+
+
+--
+-- TOC entry 1969 (class 0 OID 33065)
+-- Dependencies: 169
+-- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY estado (id, descripcion) FROM stdin;
+1	Activo
+2	Frecuente
+3	Inactivo
+4	Pasivo
+\.
+
+
+--
+-- TOC entry 1974 (class 0 OID 33277)
+-- Dependencies: 174
+-- Data for Name: estado_civil; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY estado_civil (id, descripcion) FROM stdin;
+1	Casado
+2	Soltero
+3	Divorciado
+4	Viudo
+\.
+
+
+--
+-- TOC entry 1970 (class 0 OID 33073)
+-- Dependencies: 170
+-- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY location (id, ciudad, pais, zipcode, direccion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1972 (class 0 OID 33094)
+-- Dependencies: 172
+-- Data for Name: pago; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pago (id, descripcion) FROM stdin;
+1	Tarjeta de Credito
+2	Tarjeta de Debito
+3	Efectivo
+4	Cheque
+\.
+
+
+--
+-- TOC entry 1973 (class 0 OID 33257)
+-- Dependencies: 173
+-- Data for Name: venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY venta (id, pago_id, cantidad, total, cliente_id, dia) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1840 (class 2606 OID 33056)
+-- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1846 (class 2606 OID 33306)
+-- Name: contact_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY contacto
+    ADD CONSTRAINT contact_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 1848 (class 2606 OID 33088)
+-- Name: contact_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY contacto
+    ADD CONSTRAINT contact_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1854 (class 2606 OID 33284)
+-- Name: estado_civil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estado_civil
+    ADD CONSTRAINT estado_civil_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1844 (class 2606 OID 33080)
+-- Name: location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY location
+    ADD CONSTRAINT location_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1850 (class 2606 OID 33101)
+-- Name: pago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pago
+    ADD CONSTRAINT pago_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1842 (class 2606 OID 33072)
+-- Name: state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estado
+    ADD CONSTRAINT state_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1852 (class 2606 OID 33261)
+-- Name: venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY venta
+    ADD CONSTRAINT venta_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1861 (class 2620 OID 33428)
+-- Name: editarcliente; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcliente BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXECUTE PROCEDURE editar_cliente();
+
+
+--
+-- TOC entry 1855 (class 2606 OID 33407)
+-- Name: cliente_contacto_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_contacto_id_fkey FOREIGN KEY (contacto_id) REFERENCES contacto(id);
+
+
+--
+-- TOC entry 1856 (class 2606 OID 33412)
+-- Name: cliente_estado_civil_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_estado_civil_id_fkey FOREIGN KEY (estado_civil_id) REFERENCES estado_civil(id);
+
+
+--
+-- TOC entry 1857 (class 2606 OID 33417)
+-- Name: cliente_estado_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_estado_id_fkey FOREIGN KEY (estado_id) REFERENCES estado(id);
+
+
+--
+-- TOC entry 1858 (class 2606 OID 33422)
+-- Name: cliente_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_location_id_fkey FOREIGN KEY (location_id) REFERENCES location(id);
+
+
+--
+-- TOC entry 1859 (class 2606 OID 33439)
+-- Name: venta_cliente_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY venta
+    ADD CONSTRAINT venta_cliente_id_fkey FOREIGN KEY (cliente_id) REFERENCES cliente(id);
+
+
+--
+-- TOC entry 1860 (class 2606 OID 33444)
+-- Name: venta_pago_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY venta
+    ADD CONSTRAINT venta_pago_id_fkey FOREIGN KEY (pago_id) REFERENCES pago(id);
+
+
+--
+-- TOC entry 1981 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-05-10 22:17:04
+
+--
+-- PostgreSQL database dump complete
+--
+

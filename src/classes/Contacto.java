@@ -35,6 +35,15 @@ public class Contacto {
 		this.all = new ArrayList<Contacto>();
 	}
 
+	public Contacto(int telefono, String email, String twitter, myConnection con) {
+		super();
+		this.telefono = telefono;
+		this.email = email;
+		this.twitter = twitter;
+		this.con = con.getCon();
+		this.all = new ArrayList<Contacto>();
+	}
+
 	public Contacto(int id, int telefono, String email, String twitter) {
 		super();
 		this.id = id;
@@ -193,14 +202,19 @@ public class Contacto {
 		    System.out.println("Opened database successfully");
 		    stmt = this.con.createStatement();
 		    
-		    String id = Integer.toString(this.getId());
-			String email = this.getEmail();
-			String phone = Integer.toString(this.getTelefono());
-			String twitter = this.getTwitter();
-			 
-			String sql = "INSERT INTO contacto (id, telefono, email, twitter) " + "VALUES (" + id + "," + phone +", '" + email + "', '" + twitter + "');";
-		    stmt.executeUpdate(sql);
-		
+		    ResultSet rs = stmt.executeQuery( "SELECT id FROM contacto WHERE id >= ALL (SELECT id FROM contacto);" );
+		    
+		    if (rs.next())
+		    {
+			    String id = Integer.toString(rs.getInt("id")+1);
+				String email = this.getEmail();
+				String phone = Integer.toString(this.getTelefono());
+				String twitter = this.getTwitter();
+				 
+				String sql = "INSERT INTO contacto (id, telefono, email, twitter) " + "VALUES (" + id + "," + phone +", '" + email + "', '" + twitter + "');";
+			    stmt.executeUpdate(sql);
+		    }
+		    
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
