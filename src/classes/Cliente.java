@@ -270,7 +270,7 @@ public class Cliente {
 		
 		try
 		{
-			this.con.setAutoCommit(false);
+			//this.con.setAutoCommit(false);
 	        System.out.println("Opened database successfully");
 	        
 	        stmt = this.con.createStatement();

@@ -64,8 +64,8 @@ public class PagoGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			myConnection connection = new myConnection("postgres","root");
-			Pago pago_user = new Pago(txtDesc.getText());			
-			String insertStatus = pago_user.insertPago(); 
+			Pago pago_user = new Pago(txtDesc.getText(), connection.getCon());
+			String insertStatus = pago_user.insertPago();
 			if (insertStatus != null)
 				System.out.println(insertStatus);
 			else
