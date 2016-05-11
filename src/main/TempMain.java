@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import classes.Contacto;
+import classes.LocationGUI;
+import classes.PagoGUI;
 import classes.Venta;
+import classes.VentaGUI;
 import connectionDB.myConnection;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -25,6 +28,13 @@ public class TempMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		//LocationGUI frame = new LocationGUI();
+		//PagoGUI frame = new PagoGUI();
+		VentaGUI frame = new VentaGUI();
+		frame.setVisible(true);
+		
+		/*
 		
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
@@ -68,5 +78,6 @@ public class TempMain {
 	    {
 	    	
 	    }
+	    */
 	}
 }
