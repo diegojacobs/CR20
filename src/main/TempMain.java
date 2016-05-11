@@ -19,6 +19,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
+import classes.*;
 
 /**
 @author Diego Jacobs
@@ -31,7 +32,7 @@ public class TempMain {
 		
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
-		VentaGUI frame = new VentaGUI();
+		clienteGUI frame = new clienteGUI();
 		frame.setVisible(true);
 		
 		/*
