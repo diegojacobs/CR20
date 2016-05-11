@@ -56,6 +56,9 @@ public class clienteGUI extends JFrame implements ActionListener {
 	ArrayList<Object> contactos;
 	ArrayList<Object> locations;
 	
+	int contacto_id;
+	int location_id;
+	
 	File file;
 	JFileChooser fc;
 	
@@ -326,11 +329,24 @@ public class clienteGUI extends JFrame implements ActionListener {
 
 				try{					
 					ImageIO.write(bi, "jpg", temp);
-					System.out.println("nueva imagen creada");
+					//System.out.println("nueva imagen creada");
 				}catch (Exception ex){
-					
+					JOptionPane.showMessageDialog(this, "Error inesperado al guardar imagen");
+					return;
 				}
 			}
+			
+			if (nombre_1.getText().isEmpty()){
+				JOptionPane.showMessageDialog(this, "Primer Nombre es un campo obligatorio");
+				return;
+			}
+			
+			if (apellido_1.getText().isEmpty()){
+				JOptionPane.showMessageDialog(this, "Primer Apellido es un campo obligatorio");
+				return;
+			}
+			
+			
 			
 			
 		}else if (e.getSource() == cancelar){
@@ -342,6 +358,9 @@ public class clienteGUI extends JFrame implements ActionListener {
 			//this.setVisible(false);
 		}else if (e.getSource() == foto){
 			open();
+		}else if (e.getSource() == contacto_button){
+			contactGUI ctg = new contactGUI();
+			ctg.setVisible(true);
 		}
 		
 	}
