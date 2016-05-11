@@ -143,11 +143,16 @@ public class VentaGUI extends JFrame {
 			}
 			
 			if (errs == 0)
-			{
+			{				
 				myConnection connection = new myConnection("postgres","root");
 				Date sql_dia = new Date(calendar.getDate().getTime());
 				Venta venta_user = new Venta(pago, cliente, cantidad, total, sql_dia, connection);
 				String insertStatus = venta_user.insertVenta();
+				
+				/*Cliente data_clientes = new Cliente();
+				data_clientes.setCon(connection.getCon());
+				String get_all_status = data_clientes.selectAllClientes();*/
+				
 				if (insertStatus != null)
 					System.out.println(insertStatus);
 				else
