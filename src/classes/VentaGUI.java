@@ -28,7 +28,10 @@ import sun.util.calendar.JulianCalendar;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import com.toedter.calendar.JCalendar;
+
+import connectionDB.myConnection;
 
 import java.sql.Date;
 
@@ -141,8 +144,9 @@ public class VentaGUI extends JFrame {
 			
 			if (errs == 0)
 			{
+				myConnection connection = new myConnection("postgres","root");
 				Date sql_dia = new Date(calendar.getDate().getTime());
-				Venta venta_user = new Venta(pago, cliente, cantidad, total, sql_dia);
+				Venta venta_user = new Venta(pago, cliente, cantidad, total, sql_dia, connection);
 				String insertStatus = venta_user.insertVenta();
 				if (insertStatus != null)
 					System.out.println(insertStatus);

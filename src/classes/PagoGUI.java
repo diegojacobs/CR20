@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
+import connectionDB.myConnection;
+
 public class PagoGUI extends JFrame {
 
 	private JPanel contentPane;
@@ -61,8 +63,9 @@ public class PagoGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			myConnection connection = new myConnection("postgres","root");
 			Pago pago_user = new Pago(txtDesc.getText());			
-			String insertStatus = pago_user.insertContacto(); 
+			String insertStatus = pago_user.insertPago(); 
 			if (insertStatus != null)
 				System.out.println(insertStatus);
 			else
