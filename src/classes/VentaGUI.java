@@ -28,11 +28,16 @@ import sun.util.calendar.JulianCalendar;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+<<<<<<< HEAD
 
 import com.toedter.calendar.JCalendar;
 
 import connectionDB.myConnection;
 
+=======
+import com.toedter.calendar.JCalendar;
+
+>>>>>>> refs/remotes/origin/master
 import java.sql.Date;
 
 public class VentaGUI extends JFrame {
@@ -143,6 +148,7 @@ public class VentaGUI extends JFrame {
 			}
 			
 			if (errs == 0)
+<<<<<<< HEAD
 			{				
 				myConnection connection = new myConnection("postgres","root");
 				Date sql_dia = new Date(calendar.getDate().getTime());
@@ -153,6 +159,12 @@ public class VentaGUI extends JFrame {
 				data_clientes.setCon(connection.getCon());
 				String get_all_status = data_clientes.selectAllClientes();*/
 				
+=======
+			{
+				Date sql_dia = new Date(calendar.getDate().getTime());
+				Venta venta_user = new Venta(pago, cliente, cantidad, total, sql_dia);
+				String insertStatus = venta_user.insertVenta();
+>>>>>>> refs/remotes/origin/master
 				if (insertStatus != null)
 					System.out.println(insertStatus);
 				else

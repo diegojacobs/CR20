@@ -24,8 +24,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
+<<<<<<< HEAD
 import connectionDB.myConnection;
 
+=======
+>>>>>>> refs/remotes/origin/master
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -69,9 +72,14 @@ public class LocationGUI extends JFrame {
 				int zipCode = Integer.parseInt(str_zipCode);
 				if (zipCode >= 0)
 				{
+<<<<<<< HEAD
 					myConnection connection = new myConnection("postgres","root");
 					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
 					String insertStatus = location_user.insertLocation();
+=======
+					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText());
+					String insertStatus = location_user.insertContacto(); 
+>>>>>>> refs/remotes/origin/master
 					if (insertStatus != null)
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);

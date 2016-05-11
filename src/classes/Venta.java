@@ -243,6 +243,7 @@ public class Venta {
 				String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
 			    stmt.executeUpdate(sql);
 		    }
+<<<<<<< HEAD
 		    else
 		    {
 		    	String id = "1";
@@ -255,11 +256,17 @@ public class Venta {
 				String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
 			    stmt.executeUpdate(sql);
 		    }
+=======
+>>>>>>> refs/remotes/origin/master
 		    
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
+<<<<<<< HEAD
 		}
+=======
+		} 
+>>>>>>> refs/remotes/origin/master
 		catch (Exception e) 
 		{
 			return e.getClass().getName()+": "+ e.getMessage();
