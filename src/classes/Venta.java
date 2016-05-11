@@ -243,11 +243,23 @@ public class Venta {
 				String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
 			    stmt.executeUpdate(sql);
 		    }
+		    else
+		    {
+		    	String id = "1";
+				String clienteID = Integer.toString(this.getClienteID());
+				String pagoID = Integer.toString(this.getPagoID());
+				String cantidad = Integer.toString(this.getCantidad());
+				String total = Double.toString(this.getTotal());
+				String dia = this.getDia().toString();
+				 
+				String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
+			    stmt.executeUpdate(sql);
+		    }
 		    
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
-		} 
+		}
 		catch (Exception e) 
 		{
 			return e.getClass().getName()+": "+ e.getMessage();
