@@ -8,6 +8,7 @@ import java.util.List;
 
 import classes.Contacto;
 import classes.LocationGUI;
+import classes.PagoGUI;
 import classes.Venta;
 import connectionDB.myConnection;
 import twitter4j.ResponseList;
@@ -28,6 +29,7 @@ public class TempMain {
 		// TODO Auto-generated method stub
 		
 		LocationGUI frame = new LocationGUI();
+		//PagoGUI frame = new PagoGUI();
 		frame.setVisible(true);
 		
 		/*

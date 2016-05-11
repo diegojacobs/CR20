@@ -86,6 +86,23 @@ public class LocationGUI extends JFrame {
 	};
 	
 	/**
+	 * OnClick Cancelar
+	 */
+	private ActionListener cancelar = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			// Limpiar txts
+			txtCiudad.setText("");
+			txtDireccion.setText("");
+			txtPais.setText("");
+			txtZipCode.setText("");
+			txtCiudad.requestFocus();
+		}
+	};
+	
+	/**
 	 * Create the frame.
 	 */
 	public LocationGUI() {
@@ -139,6 +156,7 @@ public class LocationGUI extends JFrame {
 		contentPane.add(btnGuardar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
+		btnCancelar.addActionListener(cancelar);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(242, 181, 144, 29);
 		contentPane.add(btnCancelar);
