@@ -68,6 +68,7 @@ public class TwitterStats {
 			return false;
 		else
 			return true;
+	
 	}
 	
 	public void getUser(String user)
