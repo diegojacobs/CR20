@@ -2,6 +2,7 @@ package classes;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,6 +10,7 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,76 +35,91 @@ import javax.swing.JScrollPane;
 
 import connectionDB.myConnection;
 
-public class PagoGUI extends JFrame {
+public class PagoGUI extends JDialog implements ActionListener {
 
 	private JPanel contentPane;
+	private Pago pago;
 
-	/**
-	 * Launch the application.
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LocationGUI frame = new LocationGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public PagoGUI(JFrame frame){
+		super(frame, "Pago", true);
+		initialize();
 	}
-	*/
-
+	
+	public PagoGUI(JDialog frame){
+		super(frame, "Pago", true);
+		initialize();
+	}
+	
+	public PagoGUI(JFrame frame, Pago contact){
+		super(frame, "Pago", true);
+		initialize();
+		pago = contact;
+		setValues(contact);
+	}
+	
+	public PagoGUI(JDialog frame, Pago contact){
+		super(frame, "Pago", true);
+		initialize();
+		pago = contact;
+		setValues(contact);
+	}
+	
+	public void setValues(Pago contact){
+		txtDesc.setText(contact.getDescripcion());
+	}
 	/**
 	 * OnClick Guardar
 	 */
-	private ActionListener guardar = new ActionListener() {
+	private void guardar() {
 		
-		@Override
-		public void actionPerformed(ActionEvent e) {
+		
 			// TODO Auto-generated method stub
+		if (txtDesc.getText().isEmpty()){
+			JOptionPane.showMessageDialog(this, "Descripcion es un campo obligatorio");
+			return;
+		}
 
 			myConnection connection = new myConnection("postgres","root");
-			Pago pago_user = new Pago(txtDesc.getText(), connection.getCon());
-			String insertStatus = pago_user.insertPago();
-
+			
+			String insertStatus;
+			   if (pago != null){
+				   pago.setDescripcion(txtDesc.getText());
+				   insertStatus = pago.updatePago();
+			   }else{
+				   pago = new Pago(txtDesc.getText(), connection.getCon());
+				   insertStatus = pago.insertPago();
+			   }
 			if (insertStatus != null)
 				System.out.println(insertStatus);
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Pago guardado exitosamente", "Pago", JOptionPane.PLAIN_MESSAGE);
-				txtDesc.setText("");
-				txtDesc.requestFocus();
+				JOptionPane.showMessageDialog(this, "Pago guardado exitosamente", "Pago", JOptionPane.PLAIN_MESSAGE);
+				this.dispose();
 			}
-		}
-	};
+		
+	}
 	
 	/**
 	 * OnClick Cancelar
 	 */
-	private ActionListener cancelar = new ActionListener() {
+	private void cancelar() {
 		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			// Limpiar txts
-			txtDesc.setText("");
-			txtDesc.requestFocus();
-		}
-	};
+		this.dispose();
+	}
 	private JTextField txtDesc;
 	
 	/**
 	 * Create the frame.
 	 */
-	public PagoGUI() {
-		setTitle("Pago");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 342, 158);
+	public void initialize() {
+		//setTitle("Pago");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		this.setPreferredSize(new Dimension(342,158));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		//contentPane.setBounds(100,100,342,158);
+		this.getContentPane().add(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblCiudad = new JLabel("Tipo de Pago");
@@ -111,13 +128,15 @@ public class PagoGUI extends JFrame {
 		contentPane.add(lblCiudad);
 		
 		JButton btnGuardar = new JButton("GUARDAR");
-		btnGuardar.addActionListener(guardar);
+		btnGuardar.addActionListener(this);
+		btnGuardar.setActionCommand("boton_guardar");
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnGuardar.setBounds(12, 70, 144, 29);
 		contentPane.add(btnGuardar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
-		btnCancelar.addActionListener(cancelar);
+		btnCancelar.addActionListener(this);
+		btnCancelar.setActionCommand("boton_cancelar");
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(168, 70, 144, 29);
 		contentPane.add(btnCancelar);
@@ -141,6 +160,23 @@ public class PagoGUI extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.pack();
 			
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getActionCommand().equals("boton_guardar")){
+			guardar();
+		}else if(e.getActionCommand().equals("boton_cancelar")){
+			cancelar();
+		}
+	}
+	
+	public Object showDialog(){
+		this.setVisible(true);
+		return pago;
 	}
 }

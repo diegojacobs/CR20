@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
+import javax.swing.JDialog;
+=======
 import classes.Charts;
 
 import Twitter.Tweet;
@@ -14,6 +17,7 @@ import Twitter.TwitterStats;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+>>>>>>> refs/remotes/origin/master
 
 import classes.Contacto;
 import classes.LocationGUI;
@@ -29,6 +33,9 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
+import classes.*;
+
+import javax.swing.JFrame;
 
 /**
 @author Diego Jacobs
@@ -37,7 +44,35 @@ Date: May 9, 2016
 public class TempMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		new vistaPrincipalGUI().setVisible(true);
+		//new VentaGUI((JFrame)null).showDialog();
+		/*Contacto contacto = new Contacto(123456,"algo@algo","asdfghjkl");
+		//contactGUI gui = new contactGUI((JFrame)null,contacto);
+		
+		
+		Cliente cliente = new Cliente();
+		cliente.setId(1002);
+		myConnection connection = new myConnection("postgres","root");
+		cliente.setCon(connection.getCon());
+		System.out.println(cliente.selectCliente());
+		
+		clienteGUI pago = new clienteGUI((JFrame)null,cliente);
+		
+		//estadoGUI pago = new estadoGUI((JFrame)null);
+		pago.showDialog();
+		//new vistaDeTabla().setVisible(true);;
+		
+		//gui.showDialog();
+		
+		/*
+		//LocationGUI frame = new LocationGUI();
+		//PagoGUI frame = new PagoGUI();
+		clienteGUI frame = new clienteGUI((JDialog)null);
+		Object obj = frame.showDialog();
+		//System.out.println(obj);
+		
+=======
 
 		
 		//LocationGUI frame = new LocationGUI();
@@ -45,6 +80,7 @@ public class TempMain {
 		//VentaGUI frame = new VentaGUI();
 		//Charts frame = new Charts();
 		//frame.setVisible(true);
+>>>>>>> refs/remotes/origin/master
 		
 		
 		//Connection to DataBase
@@ -73,7 +109,7 @@ public class TempMain {
 		}
 
 		//Traer tweets
-		ConfigurationBuilder cb = new ConfigurationBuilder();
+		/*ConfigurationBuilder cb = new ConfigurationBuilder();
 	       cb.setDebugEnabled(true)
 	           .setOAuthConsumerKey("JwdCyEN3QoO3MoAzqVpjItzTa")
 	           .setOAuthConsumerSecret(	"I8BPQROjPq254dxBHzesDVlUZiOVtKEO1aLcVG1xBAelZdo8JK")
@@ -91,15 +127,7 @@ public class TempMain {
 	        {
 	        	//if (status.getUser().getScreenName().equals("el_angelm"))
 	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
-	        }
-	          
-	    }
-	    catch(TwitterException e)
-	    {
-	    	
-	    }
-	    
-	    String[] usuarios = {"el_angelm"};
+
 	    
 	}
 }

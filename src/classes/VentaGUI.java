@@ -2,6 +2,7 @@ package classes;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,6 +10,7 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,7 +41,7 @@ import java.sql.Date;
 
 import javax.swing.JComboBox;
 
-public class VentaGUI extends JFrame {
+public class VentaGUI extends JDialog implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtTotal;
@@ -49,6 +51,8 @@ public class VentaGUI extends JFrame {
 	private myConnection connection;
 	private ArrayList<Pago> pagos;
 	private ArrayList<Cliente> clientes;
+	
+	Venta venta;
 
 	/**
 	 * Launch the application.
@@ -70,100 +74,117 @@ public class VentaGUI extends JFrame {
 	/**
 	 * OnClick Guardar
 	 */
-	private ActionListener guardar = new ActionListener() {
+	private void guardar() {
 		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			// Validar ingresos
-			String str_total = txtTotal.getText();
-			
-			int pago = comboBoxPago.getSelectedIndex();
-			int cliente = comboBoxCliente.getSelectedIndex();
-			double total = 0.0;
-			
-			int errs = 0;		
-			
-			if (pago == -1)
-			{
-				JOptionPane.showMessageDialog(null, "No ha seleccionado un pago", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
-				errs++;
-			}		
-			
-			if (cliente == -1)
-			{
-				JOptionPane.showMessageDialog(null, "No ha seleccionado un cliente", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
-				errs++;
-			}		
-			
-			try
-			{
-				total = Double.parseDouble(str_total);				
-			}
-			catch (NumberFormatException ee)
-			{
-				JOptionPane.showMessageDialog(null, "Error en el total", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
-				errs++;
-			}
-			
-			if (total < 0)
-			{
-				JOptionPane.showMessageDialog(null, "Error en el total", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
-				errs++;
-			}
-			
-			if (errs == 0)
-			{
-				connection = new myConnection("postgres","root");
-				Date sql_dia = new Date(calendar.getDate().getTime());
-				Venta venta_user = new Venta(pagos.get(pago).getId(), clientes.get(cliente).getId(), total, sql_dia, connection);
-				String insertStatus = venta_user.insertVenta();
-				
-				if (insertStatus != null)
-					System.out.println(insertStatus);
-				else
-				{
-					JOptionPane.showMessageDialog(null, "Venta guardada exitosamente", "Venta", JOptionPane.PLAIN_MESSAGE);
-					if (comboBoxPago.getItemCount() > 0)
-						comboBoxPago.setSelectedIndex(0);
-					if (comboBoxCliente.getItemCount() > 0)
-						comboBoxCliente.setSelectedIndex(0);
-					txtTotal.setText("");
-					comboBoxPago.requestFocus();
-				}
-			}			
+		// TODO Auto-generated method stub
+		// Validar ingresos
+		String str_total = txtTotal.getText();
+		
+		int pago = comboBoxPago.getSelectedIndex();
+		int cliente = comboBoxCliente.getSelectedIndex();
+		double total = 0.0;
+		
+		int errs = 0;		
+		
+		if (pago == -1)
+		{
+			JOptionPane.showMessageDialog(this, "No ha seleccionado un pago", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+			errs++;
+		}		
+		
+		if (cliente == -1)
+		{
+			JOptionPane.showMessageDialog(this, "No ha seleccionado un cliente", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+			errs++;
+		}		
+		
+		try
+		{
+			total = Double.parseDouble(str_total);				
 		}
-	};
+		catch (NumberFormatException ee)
+		{
+			JOptionPane.showMessageDialog(this, "Error en el total", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+			errs++;
+		}
+		
+		if (total < 0)
+		{
+			JOptionPane.showMessageDialog(this, "Error en el total", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+			errs++;
+		}
+		
+		if (errs == 0)
+		{
+			connection = new myConnection("postgres","root");
+			Date sql_dia = new Date(calendar.getDate().getTime());
+			venta = new Venta(pagos.get(pago).getId(), clientes.get(cliente).getId(), total, sql_dia, connection);
+			String insertStatus = venta.insertVenta();
+			
+			if (insertStatus != null)
+				System.out.println(insertStatus);
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Venta guardada exitosamente", "Venta", JOptionPane.PLAIN_MESSAGE);
+				this.dispose();
+			}
+		}			
+	}
+	
 	
 	/**
 	 * OnClick Cancelar
 	 */
-	private ActionListener cancelar = new ActionListener() {
+	private void cancelar(){
+		this.dispose();
+	}
+	
+	
+	public VentaGUI(JFrame frame){
+		super(frame, "Venta", true);
+		initialize();
+	}
+	
+	public VentaGUI(JDialog frame){
+		super(frame, "Venta", true);
+		initialize();
+	}
+	
+	public VentaGUI(JFrame frame, Venta contact){
+		super(frame, "Venta", true);
+		initialize();
+		venta = contact;
+		setValues(contact);
+	}
+	
+	public VentaGUI(JDialog frame, Venta contact){
+		super(frame, "Venta", true);
+		initialize();
+		venta = contact;
+		setValues(contact);
+	}
+	
+	public void setValues(Venta venta){
 		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			// Limpiar txts
-			if (comboBoxPago.getItemCount() > 0)
-				comboBoxPago.setSelectedIndex(0);
-			if (comboBoxCliente.getItemCount() > 0)
-				comboBoxCliente.setSelectedIndex(0);
-			txtTotal.setText("");
-			comboBoxPago.requestFocus();
-		}
-	};
+	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public VentaGUI() {
-		setTitle("Venta");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 643, 321);
+	public void initialize() {
+		this.setPreferredSize(new Dimension(643, 321));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		//contentPane.setBounds(100,100,342,158);
+		this.getContentPane().add(contentPane);
 		contentPane.setLayout(null);
+		//setTitle("Venta");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setBounds(100, 100, 643, 321);
+		//contentPane = new JPanel();
+		//contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//setContentPane(contentPane);
+		//contentPane.setLayout(null);
 		
 		JLabel lblPago = new JLabel("Tipo de pago");
 		lblPago.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -186,13 +207,15 @@ public class VentaGUI extends JFrame {
 		contentPane.add(txtTotal);
 		
 		JButton btnGuardar = new JButton("GUARDAR");
-		btnGuardar.addActionListener(guardar);
+		btnGuardar.addActionListener(this);
+		btnGuardar.setActionCommand("boton_guardar");
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnGuardar.setBounds(119, 231, 144, 29);
 		contentPane.add(btnGuardar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
-		btnCancelar.addActionListener(cancelar);
+		btnCancelar.addActionListener(this);
+		btnCancelar.setActionCommand("boton_cancelar");
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(355, 231, 144, 29);
 		contentPane.add(btnCancelar);
@@ -273,6 +296,23 @@ public class VentaGUI extends JFrame {
 		txtZipCode.setBounds(106, 85, 89, 22);
 		contentPane.add(txtZipCode);
 		*/
+		this.pack();
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getActionCommand().equals("boton_guardar")){
+			guardar();
+		}else if (e.getActionCommand().equals("boton_cancelar")){
+			cancelar();
+		}
 		
+	}
+	
+	public Object showDialog(){
+		this.setVisible(true);
+		return venta;
 	}
 }
