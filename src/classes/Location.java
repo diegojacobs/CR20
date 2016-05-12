@@ -33,6 +33,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.all = new ArrayList<Location>();
 	}
 
@@ -41,6 +42,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.con = con.getCon();
 		this.all = new ArrayList<Location>();
 	}
@@ -54,6 +56,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.con = con.getCon();
 		this.all = new ArrayList<Location>();
 	}
@@ -64,6 +67,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.all = new ArrayList<Location>();
 	}
 
@@ -233,7 +237,7 @@ public class Location {
 		    }
 		    else
 		    {
-		    	String id = Integer.toString(rs.getInt("id")+1);
+		    	String id = Integer.toString(1);
 			    this.id = Integer.parseInt(id);
 				String pais = this.getPais();
 				String code = Integer.toString(this.getCodigoPostal());

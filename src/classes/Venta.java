@@ -16,7 +16,7 @@ public class Venta {
 	private int id;
 	private int pagoID;
 	private int clienteID;
-	private int cantidad;
+
 	private double total;
 	private Date dia;
 	private Connection con;
@@ -25,51 +25,46 @@ public class Venta {
 	public Venta() {
 		this.id = -1;
 		this.pagoID = -1;
-		this.cantidad = -1;
 		this.clienteID = -1;
 		this.total = 0;
 		this.dia = null;
 		this.all = new ArrayList<Venta>();
 	}
 	
-	public Venta(int pagoID, int clienteID, int cantidad, double total, Date dia) {
+	public Venta(int pagoID, int clienteID, double total, Date dia) {
 		this.pagoID = pagoID;
 		this.clienteID = clienteID;
-		this.cantidad = cantidad;
 		this.total = total;
 		this.dia = dia;
 		this.all = new ArrayList<Venta>();
 	}
 	
-	public Venta(int pagoID, int clienteID, int cantidad, double total,
+	public Venta(int pagoID, int clienteID, double total,
 			Date dia, myConnection con) {
 		super();
 		this.pagoID = pagoID;
 		this.clienteID = clienteID;
-		this.cantidad = cantidad;
 		this.total = total;
 		this.dia = dia;
 		this.con = con.getCon();
 		this.all = new ArrayList<Venta>();
 	}
 
-	public Venta(int id, int pagoID, int clienteID, int cantidad, double total,
+	public Venta(int id, int pagoID, int clienteID, double total,
 			Date dia) {
 		this.id = id;
 		this.pagoID = pagoID;
 		this.clienteID = clienteID;
-		this.cantidad = cantidad;
 		this.total = total;
 		this.dia = dia;
 	}
 
 	
-	public Venta(int id, int pagoID, int clienteID, int cantidad, double total,
+	public Venta(int id, int pagoID, int clienteID, double total,
 			Date dia, myConnection con) {
 		this.id = id;
 		this.pagoID = pagoID;
 		this.clienteID = clienteID;
-		this.cantidad = cantidad;
 		this.total = total;
 		this.dia = dia;
 		this.con = con.getCon();
@@ -89,14 +84,6 @@ public class Venta {
 
 	public void setPagoID(int pagoID) {
 		this.pagoID = pagoID;
-	}
-
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
 	}
 
 	public int getClienteID() {
@@ -162,7 +149,7 @@ public class Venta {
 	           int  cantidad = rs.getInt("cantidad");
 	           double total = rs.getDouble("total");
 	           Date dia = rs.getDate("dia");
-	           this.all.add(new Venta(Id, pagoID, clienteID, cantidad, total, dia));
+	           this.all.add(new Venta(Id, pagoID, clienteID, total, dia));
 	        }
 	        rs.close();
 	        stmt.close();
@@ -202,7 +189,7 @@ public class Venta {
 	        	double total = rs.getDouble("total");
 	        	Date dia = rs.getDate("dia");
 	           
-	        	this.all.add(new Venta(Id, pagoID, clienteID, cantidad, total, dia));
+	        	this.all.add(new Venta(Id, pagoID, clienteID, total, dia));
 	        }
 	        rs.close();
 	        stmt.close();
@@ -236,18 +223,28 @@ public class Venta {
 			    String id = Integer.toString(rs.getInt("id")+1);
 				String clienteID = Integer.toString(this.getClienteID());
 				String pagoID = Integer.toString(this.getPagoID());
-				String cantidad = Integer.toString(this.getCantidad());
 				String total = Double.toString(this.getTotal());
 				String dia = this.getDia().toString();
 				 
-				String sql = "INSERT INTO venta (id, cliente_id, pago_id, cantidad, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + cantidad +  ", " + total + ", '" + dia + "');";
+				String sql = "INSERT INTO venta (id, cliente_id, pago_id, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + total + ", '" + dia + "');";
+			    stmt.executeUpdate(sql);
+		    }
+		    else
+		    {
+		    	String id = "1";
+				String clienteID = Integer.toString(this.getClienteID());
+				String pagoID = Integer.toString(this.getPagoID());
+				String total = Double.toString(this.getTotal());
+				String dia = this.getDia().toString();
+				 
+				String sql = "INSERT INTO venta (id, cliente_id, pago_id, total, dia) " + "VALUES (" + id + "," + clienteID +", " + pagoID + ", " + total + ", '" + dia + "');";
 			    stmt.executeUpdate(sql);
 		    }
 		    
 		    stmt.close();
 		    this.con.commit();
 		    this.con.close();
-		} 
+		}
 		catch (Exception e) 
 		{
 			return e.getClass().getName()+": "+ e.getMessage();
@@ -272,11 +269,10 @@ public class Venta {
 		    String id = Integer.toString(this.getId());
 			String clienteID = Integer.toString(this.getClienteID());
 			String pagoID = Integer.toString(this.getPagoID());
-			String cantidad = Integer.toString(this.getCantidad());
 			String total = Double.toString(this.getTotal());
 			String dia = this.getDia().toString();
 			 
-			String sql = "UPDATE venta SET cliente_id=" + clienteID + ", pago_id=" + pagoID + ", cantidad=" + cantidad +  ", total=" + total + ", dia='" + dia + "' WHERE id=" + id + ";";
+			String sql = "UPDATE venta SET cliente_id=" + clienteID + ", pago_id=" + pagoID +  ", total=" + total + ", dia='" + dia + "' WHERE id=" + id + ";";
 			stmt.executeUpdate(sql);
 		
 			stmt.close();
