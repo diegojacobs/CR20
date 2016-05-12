@@ -45,7 +45,7 @@ public class MyTwitter {
 		catch (TwitterException e) 
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e);
 		}
 		
 	    return null;
@@ -63,5 +63,21 @@ public class MyTwitter {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public TwitterFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(TwitterFactory factory) {
+		this.factory = factory;
+	}
+
+	public Twitter getTwitter() {
+		return twitter;
+	}
+
+	public void setTwitter(Twitter twitter) {
+		this.twitter = twitter;
 	}
 }
