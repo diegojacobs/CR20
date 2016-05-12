@@ -4,7 +4,14 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import Twitter.Tweet;
+import Twitter.TwitterStats;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import classes.Contacto;
 import classes.LocationGUI;
@@ -12,6 +19,7 @@ import classes.PagoGUI;
 import classes.Venta;
 import classes.VentaGUI;
 import connectionDB.myConnection;
+import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -54,35 +62,13 @@ public class TempMain {
 		//contactDB.updateContacto();
 		*/
 		
-		//Traer tweets
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-	       cb.setDebugEnabled(true)
-	           .setOAuthConsumerKey("JwdCyEN3QoO3MoAzqVpjItzTa")
-	           .setOAuthConsumerSecret(	"I8BPQROjPq254dxBHzesDVlUZiOVtKEO1aLcVG1xBAelZdo8JK")
-	           .setOAuthAccessToken("69966536-bxn2YRwfhunK0CmyyPcu4Y5VcH9gJldC6k0cU2f7L")
-	           .setOAuthAccessTokenSecret("tjaE9qdjxihwSAt55huJUXBtahGAj3WRQkH2soLK0Fn9i");
-
-	    try 
-	    {
-	    	TwitterFactory factory = new TwitterFactory(cb.build());
-	        Twitter twitter = factory.getInstance();
-	        User user = twitter.verifyCredentials();
-	        List<Status> statusess = twitter.getHomeTimeline();
-	        
-	        for(Status status : statusess)
-	        {
-	        	//if (status.getUser().getScreenName().equals("el_angelm"))
-	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
-	        }
-	          
-	    }
-	    catch(TwitterException e)
-	    {
-	    	
-	    }
-	    
-	    String[] usuarios = {"el_angelm"};
-
+		TwitterStats tw = new TwitterStats();
+		tw.insertUser("el_angelm");
+		
+		for (Tweet tweet: tw.getTimeline())
+		{
+			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+		}
 	    
 	}
 }
