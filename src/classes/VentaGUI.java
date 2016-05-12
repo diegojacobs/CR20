@@ -80,7 +80,6 @@ public class VentaGUI extends JFrame {
 			
 			int pago = comboBoxPago.getSelectedIndex();
 			int cliente = comboBoxCliente.getSelectedIndex();
-			int cantidad = 0;
 			double total = 0.0;
 			
 			int errs = 0;		
@@ -104,6 +103,7 @@ public class VentaGUI extends JFrame {
 			catch (NumberFormatException ee)
 			{
 				JOptionPane.showMessageDialog(null, "Error en el total", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+				errs++;
 			}
 			
 			if (total < 0)
@@ -114,6 +114,7 @@ public class VentaGUI extends JFrame {
 			
 			if (errs == 0)
 			{
+				connection = new myConnection("postgres","root");
 				Date sql_dia = new Date(calendar.getDate().getTime());
 				Venta venta_user = new Venta(pagos.get(pago).getId(), clientes.get(cliente).getId(), total, sql_dia, connection);
 				String insertStatus = venta_user.insertVenta();
@@ -121,7 +122,15 @@ public class VentaGUI extends JFrame {
 				if (insertStatus != null)
 					System.out.println(insertStatus);
 				else
+				{
 					JOptionPane.showMessageDialog(null, "Venta guardada exitosamente", "Venta", JOptionPane.PLAIN_MESSAGE);
+					if (comboBoxPago.getItemCount() > 0)
+						comboBoxPago.setSelectedIndex(0);
+					if (comboBoxCliente.getItemCount() > 0)
+						comboBoxCliente.setSelectedIndex(0);
+					txtTotal.setText("");
+					comboBoxPago.requestFocus();
+				}
 			}			
 		}
 	};
@@ -150,7 +159,7 @@ public class VentaGUI extends JFrame {
 	public VentaGUI() {
 		setTitle("Venta");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 496, 320);
+		setBounds(100, 100, 643, 321);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -179,13 +188,13 @@ public class VentaGUI extends JFrame {
 		JButton btnGuardar = new JButton("GUARDAR");
 		btnGuardar.addActionListener(guardar);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnGuardar.setBounds(63, 231, 144, 29);
+		btnGuardar.setBounds(119, 231, 144, 29);
 		contentPane.add(btnGuardar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.addActionListener(cancelar);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnCancelar.setBounds(273, 231, 144, 29);
+		btnCancelar.setBounds(355, 231, 144, 29);
 		contentPane.add(btnCancelar);
 		
 		Image img_save;
@@ -202,16 +211,16 @@ public class VentaGUI extends JFrame {
 		}
 		
 		calendar = new JCalendar();
-		calendar.setBounds(253, 48, 198, 155);
+		calendar.setBounds(393, 48, 198, 155);
 		contentPane.add(calendar);
 		
 		JLabel lblDia = new JLabel("D\u00EDa");
 		lblDia.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblDia.setBounds(337, 13, 40, 22);
+		lblDia.setBounds(477, 13, 40, 22);
 		contentPane.add(lblDia);
 		
 		comboBoxPago = new JComboBox<String>();
-		comboBoxPago.setBounds(130, 55, 89, 22);		
+		comboBoxPago.setBounds(130, 55, 176, 22);		
 		connection = new myConnection("postgres","root");
 		
 		Pago data_pagos = new Pago();
@@ -230,7 +239,7 @@ public class VentaGUI extends JFrame {
 		contentPane.add(comboBoxPago);
 		
 		comboBoxCliente = new JComboBox<String>();
-		comboBoxCliente.setBounds(130, 89, 89, 22);
+		comboBoxCliente.setBounds(130, 89, 176, 22);
 		connection = new myConnection("postgres","root");
 		
 		Cliente data_clientes = new Cliente();
