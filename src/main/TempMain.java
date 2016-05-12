@@ -36,14 +36,15 @@ public class TempMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		/*
+
+		
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
 		VentaGUI frame = new VentaGUI();
 		frame.setVisible(true);
 		
 		
-		
+		/*
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
 		Contacto contact = new Contacto(30526044,"diego@gmail.com","diego",connection);
@@ -60,8 +61,8 @@ public class TempMain {
 		//contactDB.selectAllContactos();
 		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
-		*/
 		
+<<<<<<< HEAD
 		TwitterStats tw = new TwitterStats();
 		tw.insertUser("el_angelm");
 		
@@ -69,6 +70,39 @@ public class TempMain {
 		{
 			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
 		}
+=======
+		//Traer tweets
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+	       cb.setDebugEnabled(true)
+	           .setOAuthConsumerKey("JwdCyEN3QoO3MoAzqVpjItzTa")
+	           .setOAuthConsumerSecret(	"I8BPQROjPq254dxBHzesDVlUZiOVtKEO1aLcVG1xBAelZdo8JK")
+	           .setOAuthAccessToken("69966536-bxn2YRwfhunK0CmyyPcu4Y5VcH9gJldC6k0cU2f7L")
+	           .setOAuthAccessTokenSecret("tjaE9qdjxihwSAt55huJUXBtahGAj3WRQkH2soLK0Fn9i");
+
+	    try 
+	    {
+	    	TwitterFactory factory = new TwitterFactory(cb.build());
+	        Twitter twitter = factory.getInstance();
+	        User user = twitter.verifyCredentials();
+	        List<Status> statusess = twitter.getHomeTimeline();
+	        
+	        for(Status status : statusess)
+	        {
+	        	//if (status.getUser().getScreenName().equals("el_angelm"))
+	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
+	        }
+	          
+	    }
+	    catch(TwitterException e)
+	    {
+	    	
+	    }
+	    
+	    String[] usuarios = {"el_angelm"};
+	    
+	    */
+
+>>>>>>> refs/remotes/origin/master
 	    
 	}
 }
