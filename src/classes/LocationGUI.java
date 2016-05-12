@@ -68,7 +68,7 @@ public class LocationGUI extends JFrame {
 				if (zipCode >= 0)
 				{
 					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText());
-					String insertStatus = location_user.insertContacto(); 
+					String insertStatus = location_user.insertLocation(); 
 					if (insertStatus != null)
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);

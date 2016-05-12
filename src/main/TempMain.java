@@ -28,13 +28,13 @@ public class TempMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		/*
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
 		VentaGUI frame = new VentaGUI();
 		frame.setVisible(true);
 		
-		/*
+		
 		
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
@@ -52,6 +52,7 @@ public class TempMain {
 		//contactDB.selectAllContactos();
 		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
+		*/
 		
 		//Traer tweets
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -67,6 +68,7 @@ public class TempMain {
 	        Twitter twitter = factory.getInstance();
 	        User user = twitter.verifyCredentials();
 	        List<Status> statusess = twitter.getHomeTimeline();
+	        
 	        for(Status status : statusess)
 	        {
 	        	//if (status.getUser().getScreenName().equals("el_angelm"))
@@ -78,6 +80,9 @@ public class TempMain {
 	    {
 	    	
 	    }
-	    */
+	    
+	    String[] usuarios = {"el_angelm"};
+
+	    
 	}
 }

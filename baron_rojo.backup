@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.2.14
 -- Dumped by pg_dump version 9.2.14
--- Started on 2016-05-10 22:17:03
+-- Started on 2016-05-11 19:40:43
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -21,7 +21,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 1982 (class 0 OID 0)
+-- TOC entry 2000 (class 0 OID 0)
 -- Dependencies: 175
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -32,7 +32,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
--- TOC entry 188 (class 1255 OID 33427)
+-- TOC entry 191 (class 1255 OID 33490)
 -- Name: editar_cliente(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -43,16 +43,80 @@ CREATE FUNCTION editar_cliente() RETURNS trigger
         IF NEW.id IS NULL THEN
             RAISE EXCEPTION 'ID de Cliente no puede ser null';
         END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_cliente() OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1255 OID 33492)
+-- Name: editar_cliente2(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_cliente2() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
         IF NEW.id in (select id from cliente) THEN
             RAISE EXCEPTION 'ID cliente ya existe';
         END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_cliente2() OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1255 OID 33494)
+-- Name: editar_cliente3(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_cliente3() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
         IF NEW.location_id not in (select id from location) THEN
             RAISE EXCEPTION 'El id de dirección no hace referencia a ninguna direccion';
         END IF;
-        IF NEW.contacto_id in (select id from contacto) THEN
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_cliente3() OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1255 OID 33496)
+-- Name: editar_cliente4(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_cliente4() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.contacto_id not in (select id from contacto) THEN
             RAISE EXCEPTION 'El id de contacto no hace referencia a ningun contacto';
         END IF;
-        IF NEW.estado_id not in (select id from estado) THEN
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_cliente4() OWNER TO postgres;
+
+--
+-- TOC entry 195 (class 1255 OID 33498)
+-- Name: editar_cliente5(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_cliente5() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.estado_id  not in (select id from estado) THEN
             RAISE EXCEPTION 'El id de estado no hace referencia a ningun estado';
         END IF;
         IF NEW.descuento < 0 THEN
@@ -66,7 +130,102 @@ CREATE FUNCTION editar_cliente() RETURNS trigger
 $$;
 
 
-ALTER FUNCTION public.editar_cliente() OWNER TO postgres;
+ALTER FUNCTION public.editar_cliente5() OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1255 OID 33500)
+-- Name: editar_venta(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_venta() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.cliente_id NOT IN (SELECT id FROM cliente) THEN
+            RAISE EXCEPTION 'El cliente no existe';
+        END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_venta() OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1255 OID 33502)
+-- Name: editar_venta2(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION editar_venta2() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.pago_id NOT IN (SELECT id FROM pago) THEN
+            RAISE EXCEPTION 'El tipo de pago no existe';
+        END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.editar_venta2() OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1255 OID 33486)
+-- Name: email(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION email() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $_$
+    BEGIN
+        IF NEW.email not like '%@$.%' THEN
+            RAISE EXCEPTION 'La cuenta de correo no es valida';
+        END IF;
+        RETURN NEW;
+    END;
+$_$;
+
+
+ALTER FUNCTION public.email() OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1255 OID 33488)
+-- Name: email2(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION email2() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.email in (select email from contacto where email<>''  ) THEN
+            RAISE EXCEPTION 'La cuenta de correo ya existe';
+        END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.email2() OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1255 OID 33484)
+-- Name: twitter(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION twitter() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.twitter in (SELECT twitter FROM contacto) THEN
+            RAISE EXCEPTION 'La cuenta de twitter debe ser unica entre todos los clientes';
+        END IF;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.twitter() OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -174,7 +333,6 @@ ALTER TABLE public.pago OWNER TO postgres;
 CREATE TABLE venta (
     id integer NOT NULL,
     pago_id integer,
-    cantidad integer,
     total double precision,
     cliente_id integer,
     dia date
@@ -184,29 +342,31 @@ CREATE TABLE venta (
 ALTER TABLE public.venta OWNER TO postgres;
 
 --
--- TOC entry 1968 (class 0 OID 33049)
+-- TOC entry 1986 (class 0 OID 33049)
 -- Dependencies: 168
 -- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY cliente (id, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, fecha_de_nacimineto, location_id, contacto_id, estado_id, descuento, image, genero, estado_civil_id) FROM stdin;
+1	Diego	Javier	Jacobs	Tercero	1995-05-09	1	1	1	0	c:/images/foto.png	t	2
 \.
 
 
 --
--- TOC entry 1971 (class 0 OID 33081)
+-- TOC entry 1989 (class 0 OID 33081)
 -- Dependencies: 171
 -- Data for Name: contacto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY contacto (id, telefono, email, twitter) FROM stdin;
 6	30526044	diegojacobs@gmail.com	diegojacobs
-8	30526044	diegojaco@gmail.com	diegojacobs
+1	30526044	diegojacobs9595@gmail.com	diegojacobs95
+9	30526044	diego@gmail.com	diego
 \.
 
 
 --
--- TOC entry 1969 (class 0 OID 33065)
+-- TOC entry 1987 (class 0 OID 33065)
 -- Dependencies: 169
 -- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -220,7 +380,7 @@ COPY estado (id, descripcion) FROM stdin;
 
 
 --
--- TOC entry 1974 (class 0 OID 33277)
+-- TOC entry 1992 (class 0 OID 33277)
 -- Dependencies: 174
 -- Data for Name: estado_civil; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -234,17 +394,18 @@ COPY estado_civil (id, descripcion) FROM stdin;
 
 
 --
--- TOC entry 1970 (class 0 OID 33073)
+-- TOC entry 1988 (class 0 OID 33073)
 -- Dependencies: 170
 -- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY location (id, ciudad, pais, zipcode, direccion) FROM stdin;
+1	Guatemala	Guatemala	1016	Zona 16
 \.
 
 
 --
--- TOC entry 1972 (class 0 OID 33094)
+-- TOC entry 1990 (class 0 OID 33094)
 -- Dependencies: 172
 -- Data for Name: pago; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -258,17 +419,18 @@ COPY pago (id, descripcion) FROM stdin;
 
 
 --
--- TOC entry 1973 (class 0 OID 33257)
+-- TOC entry 1991 (class 0 OID 33257)
 -- Dependencies: 173
 -- Data for Name: venta; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY venta (id, pago_id, cantidad, total, cliente_id, dia) FROM stdin;
+COPY venta (id, pago_id, total, cliente_id, dia) FROM stdin;
+1	1	12.5	1	3916-01-30
 \.
 
 
 --
--- TOC entry 1840 (class 2606 OID 33056)
+-- TOC entry 1849 (class 2606 OID 33056)
 -- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -277,7 +439,7 @@ ALTER TABLE ONLY cliente
 
 
 --
--- TOC entry 1846 (class 2606 OID 33306)
+-- TOC entry 1855 (class 2606 OID 33306)
 -- Name: contact_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -286,7 +448,7 @@ ALTER TABLE ONLY contacto
 
 
 --
--- TOC entry 1848 (class 2606 OID 33088)
+-- TOC entry 1857 (class 2606 OID 33088)
 -- Name: contact_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -295,7 +457,7 @@ ALTER TABLE ONLY contacto
 
 
 --
--- TOC entry 1854 (class 2606 OID 33284)
+-- TOC entry 1863 (class 2606 OID 33284)
 -- Name: estado_civil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -304,7 +466,7 @@ ALTER TABLE ONLY estado_civil
 
 
 --
--- TOC entry 1844 (class 2606 OID 33080)
+-- TOC entry 1853 (class 2606 OID 33080)
 -- Name: location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -313,7 +475,7 @@ ALTER TABLE ONLY location
 
 
 --
--- TOC entry 1850 (class 2606 OID 33101)
+-- TOC entry 1859 (class 2606 OID 33101)
 -- Name: pago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -322,7 +484,7 @@ ALTER TABLE ONLY pago
 
 
 --
--- TOC entry 1842 (class 2606 OID 33072)
+-- TOC entry 1851 (class 2606 OID 33072)
 -- Name: state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -331,7 +493,7 @@ ALTER TABLE ONLY estado
 
 
 --
--- TOC entry 1852 (class 2606 OID 33261)
+-- TOC entry 1861 (class 2606 OID 33261)
 -- Name: venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -340,7 +502,7 @@ ALTER TABLE ONLY venta
 
 
 --
--- TOC entry 1861 (class 2620 OID 33428)
+-- TOC entry 1870 (class 2620 OID 33491)
 -- Name: editarcliente; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -348,7 +510,79 @@ CREATE TRIGGER editarcliente BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXE
 
 
 --
--- TOC entry 1855 (class 2606 OID 33407)
+-- TOC entry 1871 (class 2620 OID 33493)
+-- Name: editarcliente2; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcliente2 BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXECUTE PROCEDURE editar_cliente2();
+
+
+--
+-- TOC entry 1872 (class 2620 OID 33495)
+-- Name: editarcliente3; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcliente3 BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXECUTE PROCEDURE editar_cliente3();
+
+
+--
+-- TOC entry 1873 (class 2620 OID 33497)
+-- Name: editarcliente4; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcliente4 BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXECUTE PROCEDURE editar_cliente4();
+
+
+--
+-- TOC entry 1874 (class 2620 OID 33499)
+-- Name: editarcliente5; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcliente5 BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXECUTE PROCEDURE editar_cliente5();
+
+
+--
+-- TOC entry 1875 (class 2620 OID 33485)
+-- Name: editarcontacto; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcontacto BEFORE INSERT OR UPDATE ON contacto FOR EACH ROW EXECUTE PROCEDURE twitter();
+
+
+--
+-- TOC entry 1876 (class 2620 OID 33487)
+-- Name: editarcontactoemail; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcontactoemail BEFORE INSERT OR UPDATE ON contacto FOR EACH ROW EXECUTE PROCEDURE email();
+
+
+--
+-- TOC entry 1877 (class 2620 OID 33489)
+-- Name: editarcontactoemail2; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarcontactoemail2 BEFORE INSERT OR UPDATE ON contacto FOR EACH ROW EXECUTE PROCEDURE email2();
+
+
+--
+-- TOC entry 1878 (class 2620 OID 33501)
+-- Name: editarventa; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarventa BEFORE INSERT OR UPDATE ON venta FOR EACH ROW EXECUTE PROCEDURE editar_venta();
+
+
+--
+-- TOC entry 1879 (class 2620 OID 33503)
+-- Name: editarventa2; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER editarventa2 BEFORE INSERT OR UPDATE ON venta FOR EACH ROW EXECUTE PROCEDURE editar_venta2();
+
+
+--
+-- TOC entry 1864 (class 2606 OID 33407)
 -- Name: cliente_contacto_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -357,7 +591,7 @@ ALTER TABLE ONLY cliente
 
 
 --
--- TOC entry 1856 (class 2606 OID 33412)
+-- TOC entry 1865 (class 2606 OID 33412)
 -- Name: cliente_estado_civil_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -366,7 +600,7 @@ ALTER TABLE ONLY cliente
 
 
 --
--- TOC entry 1857 (class 2606 OID 33417)
+-- TOC entry 1866 (class 2606 OID 33417)
 -- Name: cliente_estado_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -375,7 +609,7 @@ ALTER TABLE ONLY cliente
 
 
 --
--- TOC entry 1858 (class 2606 OID 33422)
+-- TOC entry 1867 (class 2606 OID 33422)
 -- Name: cliente_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -384,7 +618,7 @@ ALTER TABLE ONLY cliente
 
 
 --
--- TOC entry 1859 (class 2606 OID 33439)
+-- TOC entry 1868 (class 2606 OID 33504)
 -- Name: venta_cliente_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -393,7 +627,7 @@ ALTER TABLE ONLY venta
 
 
 --
--- TOC entry 1860 (class 2606 OID 33444)
+-- TOC entry 1869 (class 2606 OID 33509)
 -- Name: venta_pago_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -402,7 +636,7 @@ ALTER TABLE ONLY venta
 
 
 --
--- TOC entry 1981 (class 0 OID 0)
+-- TOC entry 1999 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -413,7 +647,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-05-10 22:17:04
+-- Completed on 2016-05-11 19:40:44
 
 --
 -- PostgreSQL database dump complete
