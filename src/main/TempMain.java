@@ -1,41 +1,7 @@
 package main;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-<<<<<<< HEAD
-import javax.swing.JDialog;
-=======
 import classes.Charts;
-
-import Twitter.Tweet;
-import Twitter.TwitterStats;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
->>>>>>> refs/remotes/origin/master
-
-import classes.Contacto;
-import classes.LocationGUI;
-import classes.PagoGUI;
-import classes.Venta;
-import classes.VentaGUI;
-import connectionDB.myConnection;
-import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.conf.ConfigurationBuilder;
-import classes.*;
-
-import javax.swing.JFrame;
+import classes.vistaPrincipalGUI;
 
 /**
 @author Diego Jacobs
@@ -45,7 +11,10 @@ public class TempMain {
 
 	public static void main(String[] args) {
 		
-		new vistaPrincipalGUI().setVisible(true);
+		Charts frame = new Charts();
+		frame.setVisible(true);
+	}
+}
 		//new VentaGUI((JFrame)null).showDialog();
 		/*Contacto contacto = new Contacto(123456,"algo@algo","asdfghjkl");
 		//contactGUI gui = new contactGUI((JFrame)null,contacto);
@@ -78,8 +47,8 @@ public class TempMain {
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
 		//VentaGUI frame = new VentaGUI();
-		//Charts frame = new Charts();
-		//frame.setVisible(true);
+		Charts frame = new Charts();
+		frame.setVisible(true);*//*
 >>>>>>> refs/remotes/origin/master
 		
 		
@@ -129,5 +98,5 @@ public class TempMain {
 	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
 
 	    
-	}
-}
+	}*/
+
