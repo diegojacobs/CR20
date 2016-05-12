@@ -1,15 +1,20 @@
 package classes;
 
+import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Component;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -26,6 +31,7 @@ import javax.swing.JTable;
 
 
 
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -36,6 +42,8 @@ public class vistaDeTabla extends JFrame {
 	
 	private String tipo_tabla;
 	private Object objeto;
+	private ArrayList<JCheckBox> columns = new ArrayList();
+	private JTable table = null;
 
 	public vistaDeTabla(String tipo_tabla){
 		this.tipo_tabla = tipo_tabla;
@@ -103,7 +111,7 @@ public class vistaDeTabla extends JFrame {
 	}
 	
 	public void algo(){
-		JTable table = null;
+		
 		try{
 			
 			Connection con = new myConnection("postgres","root").getCon();
@@ -117,6 +125,9 @@ public class vistaDeTabla extends JFrame {
 		    
 		    ButtonColumn buttoncolumn = new ButtonColumn(table,delete,table.getColumnCount()-1);
 		    ButtonColumn buttoncolumn2 = new ButtonColumn(table,edit,table.getColumnCount()-2);
+		    ButtonColumn buttoncolumn3;
+		    if (tipo_tabla.equals("cliente") || tipo_tabla.equals("contacto"))
+		    	buttoncolumn3 = new ButtonColumn (table, twitter, table.getColumnCount()-3);
 		    
 		    
 		    
@@ -126,8 +137,34 @@ public class vistaDeTabla extends JFrame {
 		if (table != null){
 
 		    JScrollPane scrollPane_1 = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		    this.getContentPane().add(scrollPane_1);
+		    this.getContentPane().add(scrollPane_1,BorderLayout.CENTER);
 		    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		    
+		    JToolBar toolBar = new JToolBar();
+			this.getContentPane().add(toolBar, BorderLayout.NORTH);
+			
+			
+			for (JCheckBox temp: columns){
+				temp.addItemListener(new ItemListener() {
+		    	      public void itemStateChanged(ItemEvent e) {
+    	    	        if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+    	    	            //do something...
+    	    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMinWidth(20);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMaxWidth(300);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setPreferredWidth(100);
+    	    	        } else {//checkbox has been deselected
+    	    	            //do something...
+    	    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMinWidth(0);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMaxWidth(0);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setPreferredWidth(0);
+		    	        	
+    	    	        };
+		    	   
+		    	      }
+		    	    });
+				toolBar.add(temp);
+				
+			}
 		}
 	}
 	
@@ -257,6 +294,39 @@ public class vistaDeTabla extends JFrame {
 		}
 	};
 	
+	Action twitter = new AbstractAction(){
+		public void actionPerformed(ActionEvent e){
+			JTable table = (JTable)e.getSource();
+			int modelRow = Integer.valueOf(e.getActionCommand());
+			
+	        myConnection connection = new myConnection("postgres","root");
+	        
+			switch(tipo_tabla){
+			case "cliente":
+				Cliente cliente = (Cliente)objeto;
+				int id = cliente.getAll().get(modelRow).getContactoID();
+				Contacto contacto = new Contacto();
+				contacto.setId(id);
+		        connection = new myConnection("postgres","root");
+		        contacto.setCon(connection.getCon());
+		        contacto.selectContacto();
+		        if (contacto.getTwitter().isEmpty()){
+		        	JOptionPane.showMessageDialog(null, "Twitter no definido");
+		        }
+				break;
+			case "contacto":
+				Contacto contacto2 = (Contacto)objeto;
+				if (contacto2.getAll().get(modelRow).getTwitter().isEmpty()){
+
+		        	JOptionPane.showMessageDialog(null, "Twitter no definido");
+				}
+				
+				break;
+			
+			}
+			((DefaultTableModel)table.getModel()).fireTableRowsUpdated(modelRow, modelRow);
+		}
+	};
 	
 	
 	public DefaultTableModel buildTableModel(ResultSet rs)
@@ -268,8 +338,13 @@ public class vistaDeTabla extends JFrame {
 	    Vector<String> columnNames = new Vector<String>();
 	    int columnCount = metaData.getColumnCount();
 	    for (int column = 1; column <= columnCount; column++) {
+	    	JCheckBox temp = new JCheckBox(metaData.getColumnName(column),true);
+	    	
+	    	columns.add(temp);
 	        columnNames.add(metaData.getColumnName(column));
 	    }
+	    if (tipo_tabla.equals("contacto") || tipo_tabla.equals("cliente"))
+	    	columnNames.add("Twitter");
 	    columnNames.add("Editar");
 	    columnNames.add("Eliminar");
 
@@ -280,6 +355,8 @@ public class vistaDeTabla extends JFrame {
 	        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
 	            vector.add(rs.getObject(columnIndex));
 	        }
+	        if (tipo_tabla.equals("contacto") || tipo_tabla.equals("cliente"))
+	        	vector.add("Twitter");
 	        vector.add("Editar");
 	        vector.add("Eliminar");
 	        data.add(vector);
