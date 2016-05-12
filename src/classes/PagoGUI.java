@@ -36,7 +36,6 @@ import connectionDB.myConnection;
 public class PagoGUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextArea txtDesc;
 
 	/**
 	 * Launch the application.
@@ -63,13 +62,19 @@ public class PagoGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+
 			myConnection connection = new myConnection("postgres","root");
-			Pago pago_user = new Pago(txtDesc.getText());			
-			String insertStatus = pago_user.insertPago(); 
+			Pago pago_user = new Pago(txtDesc.getText(), connection.getCon());
+			String insertStatus = pago_user.insertPago();
+
 			if (insertStatus != null)
 				System.out.println(insertStatus);
 			else
-				JOptionPane.showMessageDialog(null, "Pago guardado exitosamente", "Pago", JOptionPane.PLAIN_MESSAGE);			
+			{
+				JOptionPane.showMessageDialog(null, "Pago guardado exitosamente", "Pago", JOptionPane.PLAIN_MESSAGE);
+				txtDesc.setText("");
+				txtDesc.requestFocus();
+			}
 		}
 	};
 	
@@ -86,6 +91,7 @@ public class PagoGUI extends JFrame {
 			txtDesc.requestFocus();
 		}
 	};
+	private JTextField txtDesc;
 	
 	/**
 	 * Create the frame.
@@ -93,27 +99,27 @@ public class PagoGUI extends JFrame {
 	public PagoGUI() {
 		setTitle("Pago");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 342, 158);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblCiudad = new JLabel("Descripci\u00F3n");
+		JLabel lblCiudad = new JLabel("Tipo de Pago");
 		lblCiudad.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblCiudad.setBounds(172, 13, 107, 22);
+		lblCiudad.setBounds(12, 13, 107, 22);
 		contentPane.add(lblCiudad);
 		
 		JButton btnGuardar = new JButton("GUARDAR");
 		btnGuardar.addActionListener(guardar);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnGuardar.setBounds(51, 181, 144, 29);
+		btnGuardar.setBounds(12, 70, 144, 29);
 		contentPane.add(btnGuardar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.addActionListener(cancelar);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnCancelar.setBounds(242, 181, 144, 29);
+		btnCancelar.setBounds(168, 70, 144, 29);
 		contentPane.add(btnCancelar);
 		
 		Image img_save;
@@ -125,14 +131,10 @@ public class PagoGUI extends JFrame {
 			btnGuardar.setIcon(new ImageIcon(img_save));
 			btnCancelar.setIcon(new ImageIcon(img_cancel));
 			
-			txtDesc = new JTextArea("");
-			//textArea.setBounds(51, 48, 335, 95);
-			//contentPane.add(textArea);
-			
-			JScrollPane scrollPane = new JScrollPane(txtDesc);
-			scrollPane.setBounds(51, 55, 333, 98);
-			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			contentPane.add(scrollPane);
+			txtDesc = new JTextField();
+			txtDesc.setBounds(149, 15, 163, 22);
+			contentPane.add(txtDesc);
+			txtDesc.setColumns(10);
 			
 			
 		} catch (IOException e) {

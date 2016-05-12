@@ -33,6 +33,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.all = new ArrayList<Location>();
 	}
 
@@ -41,6 +42,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.con = con.getCon();
 		this.all = new ArrayList<Location>();
 	}
@@ -54,6 +56,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.con = con.getCon();
 		this.all = new ArrayList<Location>();
 	}
@@ -64,6 +67,7 @@ public class Location {
 		this.ciudad = ciudad;
 		this.pais = pais;
 		this.codigoPostal = codigoPostal;
+		this.direccion = direccion;
 		this.all = new ArrayList<Location>();
 	}
 
