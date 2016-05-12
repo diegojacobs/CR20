@@ -40,6 +40,26 @@ public class contactGUI extends JDialog implements ActionListener {
 		super(frame, "Contacto", true);
 		initialize();
 	}
+	
+	public contactGUI(JFrame frame, Contacto contact){
+		super(frame, "Contacto", true);
+		initialize();
+		contacto = contact;
+		setValues(contact);
+	}
+	
+	public contactGUI(JDialog frame, Contacto contact){
+		super(frame, "Contacto", true);
+		initialize();
+		contacto = contact;
+		setValues(contact);
+	}
+	
+	public void setValues(Contacto contact){
+		telefono.setText(""+contact.getTelefono());
+		email.setText(contact.getEmail());
+		twitter.setText(contact.getTwitter());
+	}
 
 	/**
 	 * Create the frame.
@@ -141,6 +161,12 @@ public class contactGUI extends JDialog implements ActionListener {
 			   
 			   InternetAddress emailAddr = new InternetAddress(str_email);
 			   emailAddr.validate();
+			   
+			   if (!str_email.split("@")[1].contains(".")){
+				   JOptionPane.showMessageDialog(this, "Error en la escritura de e-mail");
+				   return;				   
+			   }
+			   
 		   } catch (Exception ex) {
 			   JOptionPane.showMessageDialog(this, "Error en la escritura de e-mail");
 			   return;
@@ -148,8 +174,17 @@ public class contactGUI extends JDialog implements ActionListener {
 		   
 		   
 		   myConnection connection = new myConnection("postgres","root");
-		   contacto = new Contacto(int_telefono, str_email, str_twitter,connection);
-		   String insertStatus = contacto.insertContacto();
+		   String insertStatus;
+		   if (contacto != null){
+			   contacto.setTelefono(int_telefono);
+			   contacto.setEmail(str_email);
+			   contacto.setTwitter(str_twitter);
+			   insertStatus = contacto.updateContacto();
+		   }else{
+			   contacto = new Contacto(int_telefono, str_email, str_twitter,connection);
+			   insertStatus = contacto.insertContacto();
+		   }
+		  
 		   if (insertStatus != null)
 				System.out.println(insertStatus);
 				//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);

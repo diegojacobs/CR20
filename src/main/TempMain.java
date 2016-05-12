@@ -23,6 +23,8 @@ import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
 import classes.*;
 
+import javax.swing.JFrame;
+
 /**
 @author Diego Jacobs
 Date: May 9, 2016
@@ -31,6 +33,23 @@ public class TempMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		Contacto contacto = new Contacto(123456,"algo@algo","asdfghjkl");
+		//contactGUI gui = new contactGUI((JFrame)null,contacto);
+		
+		
+		Cliente cliente = new Cliente();
+		cliente.setId(1002);
+		myConnection connection = new myConnection("postgres","root");
+		cliente.setCon(connection.getCon());
+		System.out.println(cliente.selectCliente());
+		
+		clienteGUI pago = new clienteGUI((JFrame)null,cliente);
+		//estadoGUI pago = new estadoGUI((JFrame)null);
+		pago.showDialog();
+		
+		//gui.showDialog();
+		
 		/*
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
@@ -59,7 +78,7 @@ public class TempMain {
 		*/
 		
 		//Traer tweets
-		ConfigurationBuilder cb = new ConfigurationBuilder();
+		/*ConfigurationBuilder cb = new ConfigurationBuilder();
 	       cb.setDebugEnabled(true)
 	           .setOAuthConsumerKey("JwdCyEN3QoO3MoAzqVpjItzTa")
 	           .setOAuthConsumerSecret(	"I8BPQROjPq254dxBHzesDVlUZiOVtKEO1aLcVG1xBAelZdo8JK")
@@ -86,7 +105,7 @@ public class TempMain {
 	    }
 	    
 	    String[] usuarios = {"el_angelm"};
-
+*/
 	    
 	}
 }

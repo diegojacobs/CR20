@@ -3,6 +3,7 @@ package classes;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -321,7 +322,8 @@ public class Cliente {
 	        String id = Integer.toString(this.getId());
 	        
 	        stmt = this.con.createStatement();
-	        ResultSet rs = stmt.executeQuery( "SELECT * FROM contacto WHERE id = "+ id +";" );
+	        ResultSet rs = stmt.executeQuery( "SELECT * FROM cliente WHERE id = "+ id +";" );
+	        
 	        while ( rs.next() ) 
 	        {
 	        	int Id = rs.getInt("id");
@@ -359,6 +361,7 @@ public class Cliente {
 		} 
 		catch ( Exception e ) 
 		{
+			e.printStackTrace();
 			return e.getClass().getName()+": "+ e.getMessage();
 		}
 		
@@ -399,7 +402,7 @@ public class Cliente {
 			    
 				 
 				String sql = "INSERT INTO cliente(id, primer_nombre, segundo_nombre, primer_apellido,"
-						+ "segundo_apellido, fecha_de_nacimineto, location_id, contacto_id, estado_id,"
+						+ "segundo_apellido, fecha_de_nacimiento, location_id, contacto_id, estado_id,"
 						+ "descuento, image, genero, estado_civil_id)    VALUES ("
 						+ id + ", '" + primern +"', '" + segundon + "', '" + primera + "', '" + segundoa + "', '" 
 						+ fecha + "', " + locID + ", " + conID +", " + estID + ", " + desc + ", '" 
@@ -425,7 +428,7 @@ public class Cliente {
 			    
 				 
 				String sql = "INSERT INTO cliente(id, primer_nombre, segundo_nombre, primer_apellido,"
-						+ "segundo_apellido, fecha_de_nacimineto, location_id, contacto_id, estado_id,"
+						+ "segundo_apellido, fecha_de_nacimiento, location_id, contacto_id, estado_id,"
 						+ "descuento, image, genero, estado_civil_id)    VALUES ("
 						+ id + ", '" + primern +"', '" + segundon + "', '" + primera + "', '" + segundoa + "', '" 
 						+ fecha + "', " + locID + ", " + conID +", " + estID + ", " + desc + ", '" 
@@ -475,8 +478,9 @@ public class Cliente {
 					+ "primer_nombre='" + primern + "', segundo_nombre='" + segundon + "', primer_apellido='" + primera 
 					+ "', segundo_apellido='" + segundoa + "', fecha_de_nacimiento='" + fecha 
 					+ "', location_id=" + locID + ", contacto_id=" + conID + ", estado_id=" + estID 
-					+ ", descuento=" + desc + ", imagen='" + imagen + "', genero=" + gen 
+					+ ", descuento=" + desc + ", image='" + imagen + "', genero=" + gen 
 					+ ", estado_civil_id=" + estCID  + " WHERE id=" + id + ";";
+			
 			stmt.executeUpdate(sql);
 		
 			stmt.close();

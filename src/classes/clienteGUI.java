@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -48,20 +49,21 @@ import javax.swing.text.DefaultStyledDocument;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
+import connectionDB.myConnection;
+
 public class clienteGUI extends JDialog implements ActionListener {
 	
 	JTextField nombre_1, nombre_2, apellido_1, apellido_2, descuento;
 	JTextPane contacto_informacion,location_informacion;
 	JPanel content_pane;
 	JDateChooser fecha_nacimiento;
-	Choice location, estado, estado_civil, genero;
+	Choice estado, estado_civil, genero;
 	JButton foto, guardar, cancelar, contacto_button, location_button;
 	ImageIcon foto_imagen;
 	ArrayList<Contacto> contactos = new ArrayList();
 	ArrayList<Location> locations = new ArrayList();
-	
-	int contacto_id;
-	int location_id;
+	ArrayList<Estado> estados = new ArrayList();
+	ArrayList<EstadoCivil> estados_civiles = new ArrayList();
 	
 	File file;
 	JFileChooser fc;
@@ -78,6 +80,126 @@ public class clienteGUI extends JDialog implements ActionListener {
 	public clienteGUI(JDialog frame){
 		super(frame, "Cliente", true);
 		initialize();
+	}
+	
+	public clienteGUI(JFrame frame, Cliente contact){
+		super(frame, "Contacto", true);
+		initialize();
+		cliente_obj = contact;
+		setValues(contact);
+	}
+	
+	public clienteGUI(JDialog frame, Cliente contact){
+		super(frame, "Contacto", true);
+		initialize();
+		cliente_obj = contact;
+		setValues(contact);
+	}
+	
+	private void setValues(Cliente cliente){
+		nombre_1.setText(cliente.getPrimerNombre());
+		nombre_2.setText(cliente.getSegundoNombre());
+		apellido_1.setText(cliente.getPrimerApellido());
+		apellido_2.setText(cliente.getSegundoApellido());
+		
+		descuento.setText(""+cliente.getDescuento());
+		
+		myConnection connection = new myConnection("postgres","root");
+		contacto_obj = new Contacto();
+		contacto_obj.setId(cliente.getContactoID());
+		contacto_obj.setCon(connection.getCon());
+		if (contacto_obj.selectContacto()!= null){
+			JOptionPane.showMessageDialog(this, "Contacto asignado no encontrado");
+			contacto_obj = null;
+		}else{
+			contactos.add(contacto_obj);
+			String str = "";
+			str += "Telefono: "+contacto_obj.getTelefono()+"\n";
+			str += "e-mail: "+contacto_obj.getEmail()+"\n";
+			str += "twitter: "+contacto_obj.getTwitter();
+			contacto_informacion.setText(str);
+		}
+		
+		location_obj = new Location();
+		location_obj.setId(cliente.getLocationID());
+		connection = new myConnection("postgres","root");
+		location_obj.setCon(connection.getCon());
+		if (location_obj.selectLocation() != null){
+			JOptionPane.showMessageDialog(this, "Direccion asignada no encontrada");
+			contacto_obj = null;
+		}else{
+			locations.add(location_obj);
+			String str = "";
+			str += "Ciudad: "+location_obj.getCiudad()+"\n";
+			str += "Pais: "+location_obj.getPais()+"\n";
+			str += "Codigo Postal: "+location_obj.getCodigoPostal()+"\n";
+			str += "Direccion: "+location_obj.getDireccion();
+			location_informacion.setText(str);
+		}
+		fecha_nacimiento.setDate(cliente.getNacimiento());
+		
+		int i = 0;
+		for (Estado es: estados){
+			if (es.getId() == cliente.getEstadoID()){
+				estado.select(i);
+			}
+			i++;
+		}
+		
+		i = 0;
+		for (EstadoCivil ec: estados_civiles){
+			if (ec.getId() == cliente.getEstadoCivilID()){
+				estado_civil.select(i);
+			}
+			i++;
+		}
+		genero.select(1);
+		if (cliente.isGenero()) genero.select(0);
+		
+		System.out.println("imagen "+cliente.getImagen());
+		try{
+			
+			Path source = Paths.get(cliente.getImagen()); //store location
+			
+			BufferedImage before = ImageIO.read(source.toFile());
+			
+			int w = before.getWidth();
+			int h = before.getHeight();
+			int wn = 0;
+			int hn = 0;
+			
+			float scale = 0;
+			if ((130/Float.valueOf(w)) > (150/Float.valueOf(h))){
+				scale = 130/Float.valueOf(w);
+				
+			}else{
+				scale = 150/Float.valueOf(h);
+			}
+			
+			Double f1 = Double.valueOf(w*scale);
+			wn = Integer.valueOf(f1.intValue());
+			f1 = Double.valueOf(h*scale);
+			hn = Integer.valueOf(f1.intValue());
+			
+			foto_imagen = new ImageIcon(((new ImageIcon(
+		            before).getImage()
+		            .getScaledInstance(wn,hn ,
+		                    java.awt.Image.SCALE_SMOOTH))));
+			
+			foto.setIcon(foto_imagen);
+			
+			//foto.setIcon(new ImageIcon(after));
+			foto.setText("");
+			Border emptyBorder = BorderFactory.createEmptyBorder();
+			foto.setBorder(emptyBorder);
+		} catch (Exception e){
+			foto_imagen = null;
+			JOptionPane.showMessageDialog(this, "Foto asignada no encontrada");
+		}
+		
+		
+		 
+		
 	}
 	
 	private void initialize() {
@@ -167,7 +289,17 @@ public class clienteGUI extends JDialog implements ActionListener {
 		
 		estado = new Choice();
 		estado.setBounds(150,100 , 130, 25);
-		estado.add("prueba");
+		myConnection connection = new myConnection("postgres","root");
+		Estado temp = new Estado();
+		temp.setCon(connection.getCon());
+		if (temp.selectAllEstados() != null){
+			System.out.println("Error en estados");
+		}else{
+			estados = temp.getAll();
+			for (Estado es: estados){
+				estado.add(es.getDescripcion());
+			}
+		}
 		//estado.getSelectedIndex();
 		//estado.select(position);
 		//estado.select("algo");
@@ -221,8 +353,18 @@ public class clienteGUI extends JDialog implements ActionListener {
 		
 		estado_civil = new Choice();
 		estado_civil.setBounds(150,130 , 130, 25);
-		estado_civil.add("Soltero");
-		estado_civil.add("Casado");
+		
+		connection = new myConnection("postgres","root");
+		EstadoCivil temp2 = new EstadoCivil();
+		temp2.setCon(connection.getCon());
+		if (temp2.selectAllEstadosCiviles() != null){
+			System.out.println("Error en estados civiles");
+		}else{
+			estados_civiles = temp2.getAll();
+			for (EstadoCivil es: estados_civiles){
+				estado_civil.add(es.getDescripcion());
+			}
+		}
 		content_pane.add(estado_civil);
 		
 		JLabel contacto_label = new JLabel("Contacto :");
@@ -311,6 +453,8 @@ public class clienteGUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Error en fecha de nacimiento");
 				return;
 			}
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String str_date = sdf.format(this_date);
 			
 			Double descuento_num;
 			try{
@@ -372,19 +516,80 @@ public class clienteGUI extends JDialog implements ActionListener {
 				return;
 			}
 			
-			
-			if (contactos.size()>1){
-				for (int i = 0; i < contactos.size()-1; i++){
-					contactos.get(i).deleteContacto();
-				}
+			if ( location_obj == null){
+				JOptionPane.showMessageDialog(this, "Direccion es un campo obligatorio");
+				return;
 			}
 			
-			this.dispose();
+			myConnection connection = new myConnection("postgres","root");
+			String insertStatus;
+			if (cliente_obj != null){
+				cliente_obj.setPrimerNombre(nombre_1.getText());
+				cliente_obj.setSegundoNombre(nombre_2.getText());
+				cliente_obj.setPrimerApellido(apellido_1.getText());
+				cliente_obj.setSegundoApellido(apellido_2.getText());
+				cliente_obj.setNacimiento(new java.sql.Date(this_date.getDate()));
+				cliente_obj.setLocationID(location_obj.getId());
+				cliente_obj.setContactoID(contacto_obj.getId());
+				cliente_obj.setEstadoID(estados.get(estado.getSelectedIndex()).getId());
+				cliente_obj.setDescuento(descuento_num);
+				cliente_obj.setImagen(foto_direccion);
+				cliente_obj.setGenero(genero.getSelectedIndex()==0);
+				cliente_obj.setEstadoCivilID(estados_civiles.get(estado_civil.getSelectedIndex()).getId());
+				cliente_obj.setCon(connection.getCon());
+				insertStatus = cliente_obj.updateCliente();
+			}else{
+				cliente_obj = new Cliente(
+						nombre_1.getText(),
+						nombre_2.getText(),
+						apellido_1.getText(),
+						apellido_2.getText(),
+						new java.sql.Date(this_date.getDate()),
+						location_obj.getId(),
+						contacto_obj.getId(),
+						estados.get(estado.getSelectedIndex()).getId(),
+						descuento_num,
+						foto_direccion,
+						genero.getSelectedIndex()==0,
+						estados_civiles.get(estado_civil.getSelectedIndex()).getId(),
+						connection
+						);
+				//System.out.println("Contacto: "+contacto_obj.getId());
+				insertStatus = cliente_obj.insertCliente();
+			}
+			
+			if (insertStatus != null)
+				System.out.println("error: "+insertStatus);
+				//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+			else{
+				JOptionPane.showMessageDialog(this, "Cliente guardado exitosamente", "Estado", JOptionPane.PLAIN_MESSAGE);
+				if (contactos.size()>1){
+					for (int i = 0; i < contactos.size()-1; i++){
+						contactos.get(i).deleteContacto();
+					}
+				}
+				
+				if (locations.size()>1){
+					for (int i = 0; i < locations.size()-1; i++){
+						locations.get(i).deleteLocation();
+					}
+				}
+				
+				this.dispose();
+			}
+			
+			
+			
 			
 		}else if (e.getSource() == cancelar){
 			//System.out.println("cancelar");
 			
-			System.out.println("Falta descartar todos los campos agregados (location y contact)");
+			for (Contacto ct: contactos){
+				ct.deleteContacto();
+			}
+			for (Location lc: locations){
+				lc.deleteLocation();
+			}
 			
 			this.dispose();
 			//this.setVisible(false);
@@ -411,6 +616,7 @@ public class clienteGUI extends JDialog implements ActionListener {
 				locations.add(location_obj);
 				String str = "";
 				str += "Ciudad: "+location_obj.getCiudad()+"\n";
+				str += "Pais: "+location_obj.getPais()+"\n";
 				str += "Codigo Postal: "+location_obj.getCodigoPostal()+"\n";
 				str += "Direccion: "+location_obj.getDireccion();
 				location_informacion.setText(str);

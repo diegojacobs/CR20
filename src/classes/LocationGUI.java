@@ -31,7 +31,7 @@ import connectionDB.myConnection;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LocationGUI extends JDialog {
+public class LocationGUI extends JDialog implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtCiudad;
@@ -61,76 +61,58 @@ public class LocationGUI extends JDialog {
 	/**
 	 * OnClick Guardar
 	 */
-	private ActionListener guardar = new ActionListener() {
+	private void guardar() {
 		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			// Validar Zipcode
+		
 			String str_zipCode = txtZipCode.getText();
 			try
 			{
 				int zipCode = Integer.parseInt(str_zipCode);
 				if (zipCode >= 0)
 				{
-<<<<<<< HEAD
-					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText());
-					String insertStatus = location_user.insertLocation(); 
-=======
 					myConnection connection = new myConnection("postgres","root");
-<<<<<<< HEAD
-					location = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
-					String insertStatus = location.insertLocation();
-					if (insertStatus != null)
-						System.out.println(insertStatus);
-						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
-					else{
-						JOptionPane.showMessageDialog(null, "Location guardada exitosamente", "Location", JOptionPane.PLAIN_MESSAGE);
-						
-=======
-					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
-					String insertStatus = location_user.insertLocation();
->>>>>>> refs/remotes/origin/master
+					String insertStatus;
+					   if (location != null){
+						   location.setCiudad(txtCiudad.getText());
+						   location.setPais(txtPais.getText());
+						   location.setCodigoPostal(zipCode);
+						   location.setDireccion(txtDireccion.getText());
+						   insertStatus = location.updateLocation();
+					   }else{
+						   location = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
+						   insertStatus = location.insertLocation();
+					   }
+					
 					if (insertStatus != null)
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Location guardada exitosamente", "Location", JOptionPane.PLAIN_MESSAGE);
-						txtCiudad.setText("");
-						txtDireccion.setText("");
-						txtPais.setText("");
-						txtZipCode.setText("");
-						txtCiudad.requestFocus();
->>>>>>> refs/remotes/origin/master
+						JOptionPane.showMessageDialog(this, "Location guardada exitosamente", "Location", JOptionPane.PLAIN_MESSAGE);
+						this.dispose();
 					}
 				}
-				else
-					JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+				else{
+					JOptionPane.showMessageDialog(this, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 			catch (NumberFormatException ee)
 			{
-				JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
-		}
-	};
+			
+		
+	}
 	
 	/**
 	 * OnClick Cancelar
 	 */
-	private ActionListener cancelar = new ActionListener() {
+	private void cancelar() {
 		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			// Limpiar txts
-			txtCiudad.setText("");
-			txtDireccion.setText("");
-			txtPais.setText("");
-			txtZipCode.setText("");
-			txtCiudad.requestFocus();
-		}
-	};
+		this.dispose();
+	}
 	
 	public LocationGUI(JFrame frame){
 		super(frame, "Direccion", true);
@@ -140,6 +122,25 @@ public class LocationGUI extends JDialog {
 	public LocationGUI(JDialog frame){
 		super(frame, "Direccion", true);
 		initialize();
+	}
+	
+	public LocationGUI(JFrame frame, Location location){
+		super(frame, "Direccion", true);
+		initialize();
+		setValues(location);
+	}
+	
+	public LocationGUI(JDialog frame, Location location){
+		super(frame, "Direccion", true);
+		initialize();
+		setValues(location);
+	}
+	
+	public void setValues(Location location){
+		txtCiudad.setText(location.getCiudad());
+		txtPais.setText(location.getPais());;
+		txtDireccion.setText(location.getDireccion());
+		txtZipCode.setText(""+location.getCodigoPostal());;
 	}
 	
 	/**
@@ -191,13 +192,15 @@ public class LocationGUI extends JDialog {
 		contentPane.add(txtDireccion);
 		
 		JButton btnGuardar = new JButton("GUARDAR");
-		btnGuardar.addActionListener(guardar);
+		btnGuardar.setActionCommand("boton_guardar");
+		btnGuardar.addActionListener(this);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnGuardar.setBounds(51, 181, 144, 29);
 		contentPane.add(btnGuardar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
-		btnCancelar.addActionListener(cancelar);
+		btnCancelar.setActionCommand("boton_cancelar");
+		btnCancelar.addActionListener(this);
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(242, 181, 144, 29);
 		contentPane.add(btnCancelar);
@@ -244,5 +247,16 @@ public class LocationGUI extends JDialog {
 	public Object showDialog(){
 		this.setVisible(true);
 		return location;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getActionCommand().equals("boton_guardar")){
+			guardar();
+		}else if(e.getActionCommand().equals("boton_cancelar")){
+			cancelar();
+		}
+		
 	}
 }
