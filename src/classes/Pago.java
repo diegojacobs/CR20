@@ -119,6 +119,119 @@ public class Pago {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
+	public String selectAllTipoPagos()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "SELECT descripcion, count(venta.id) as totalVentas "
+	        		+ "from pago join venta on (pago.id = venta.pago_id) join cliente on (venta.cliente_id = cliente.id) "
+	        		+ "group by descripcion "
+	        		+ "order by totalVentas desc;" );
+	        while ( rs.next() ) 
+	        {
+	           String  des = rs.getString("descripcion");
+	           int Id = rs.getInt("totalventas");
+	           
+	           this.all.add(new Pago(Id, des));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
+	public String selectAllTipoPagosHombres()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "SELECT descripcion, count(venta.id) as totalVentas "
+	        		+ "from pago join venta on (pago.id = venta.pago_id) join cliente on (venta.cliente_id = cliente.id) "
+	        		+ "where cliente.genero = true "
+	        		+ "group by descripcion "
+	        		+ "order by totalVentas desc;" );
+	        while ( rs.next() ) 
+	        {
+	           String  des = rs.getString("descripcion");
+	           int Id = rs.getInt("totalventas");
+	           
+	           this.all.add(new Pago(Id, des));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
+	public String selectAllTipoPagosMujeres()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "SELECT descripcion, count(venta.id) as totalVentas "
+	        		+ "from pago join venta on (pago.id = venta.pago_id) join cliente on (venta.cliente_id = cliente.id) "
+	        		+ "where cliente.genero = false "
+	        		+ "group by descripcion "
+	        		+ "order by totalVentas desc;" );
+	        while ( rs.next() ) 
+	        {
+	           String  des = rs.getString("descripcion");
+	           int Id = rs.getInt("totalventas");
+	           
+	           this.all.add(new Pago(Id, des));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
 	public String selectPago()
 	{
 		Statement stmt = null;

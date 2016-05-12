@@ -146,7 +146,82 @@ public class Venta {
 	           int Id = rs.getInt("id");
 	           int pagoID = rs.getInt("pago_id");
 	           int clienteID  = rs.getInt("cliente_id");
-	           int  cantidad = rs.getInt("cantidad");
+	           double total = rs.getDouble("total");
+	           Date dia = rs.getDate("dia");
+	           this.all.add(new Venta(Id, pagoID, clienteID, total, dia));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
+	public String selectAllVentasClientesMujeres()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "SELECT venta.id, venta.pago_id, venta.total, venta.cliente_id, venta.dia"
+	        		+ " FROM venta join cliente on (venta.cliente_id = cliente.id)"
+	        		+ "WHERE cliente.genero = false;" );
+	        while ( rs.next() ) 
+	        {
+	           int Id = rs.getInt("id");
+	           int pagoID = rs.getInt("pago_id");
+	           int clienteID  = rs.getInt("cliente_id");
+	           double total = rs.getDouble("total");
+	           Date dia = rs.getDate("dia");
+	           this.all.add(new Venta(Id, pagoID, clienteID, total, dia));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
+	public String selectAllVentasClientesHombres()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "SELECT venta.id, venta.pago_id, venta.total, venta.cliente_id, venta.dia"
+	        		+ " FROM venta join cliente on (venta.cliente_id = cliente.id)"
+	        		+ "WHERE cliente.genero = true;" );
+	        while ( rs.next() ) 
+	        {
+	           int Id = rs.getInt("id");
+	           int pagoID = rs.getInt("pago_id");
+	           int clienteID  = rs.getInt("cliente_id");
 	           double total = rs.getDouble("total");
 	           Date dia = rs.getDate("dia");
 	           this.all.add(new Venta(Id, pagoID, clienteID, total, dia));
@@ -185,7 +260,6 @@ public class Venta {
 	        	int Id = rs.getInt("id");
 	        	int pagoID = rs.getInt("pago_id");
 	        	int clienteID  = rs.getInt("cliente_id");
-	        	int  cantidad = rs.getInt("cantidad");
 	        	double total = rs.getDouble("total");
 	        	Date dia = rs.getDate("dia");
 	           

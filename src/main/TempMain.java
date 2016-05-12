@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import classes.Charts;
 import classes.Contacto;
 import classes.LocationGUI;
 import classes.PagoGUI;
@@ -32,7 +33,8 @@ public class TempMain {
 		
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
-		VentaGUI frame = new VentaGUI();
+		//VentaGUI frame = new VentaGUI();
+		Charts frame = new Charts();
 		frame.setVisible(true);
 		
 		
