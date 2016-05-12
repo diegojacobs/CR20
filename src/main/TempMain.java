@@ -4,9 +4,20 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import javax.swing.JDialog;
+=======
+import classes.Charts;
+
+import Twitter.Tweet;
+import Twitter.TwitterStats;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+>>>>>>> refs/remotes/origin/master
 
 import classes.Contacto;
 import classes.LocationGUI;
@@ -14,6 +25,7 @@ import classes.PagoGUI;
 import classes.Venta;
 import classes.VentaGUI;
 import connectionDB.myConnection;
+import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -32,7 +44,6 @@ Date: May 9, 2016
 public class TempMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		new vistaPrincipalGUI().setVisible(true);
 		//new VentaGUI((JFrame)null).showDialog();
@@ -61,13 +72,22 @@ public class TempMain {
 		Object obj = frame.showDialog();
 		//System.out.println(obj);
 		
+=======
+
+		
+		//LocationGUI frame = new LocationGUI();
+		//PagoGUI frame = new PagoGUI();
+		//VentaGUI frame = new VentaGUI();
+		//Charts frame = new Charts();
+		//frame.setVisible(true);
+>>>>>>> refs/remotes/origin/master
 		
 		
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
 		Contacto contact = new Contacto(30526044,"diego@gmail.com","diego",connection);
 	
-		Venta sale = new Venta(1, 1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
+		Venta sale = new Venta(1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
 		
 		String text = contact.insertContacto();
 		
@@ -79,8 +99,15 @@ public class TempMain {
 		//contactDB.selectAllContactos();
 		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
-		*/
 		
+		TwitterStats tw = new TwitterStats();
+		tw.insertUser("el_angelm");
+		
+		for (Tweet tweet: tw.getTimeline())
+		{
+			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+		}
+
 		//Traer tweets
 		/*ConfigurationBuilder cb = new ConfigurationBuilder();
 	       cb.setDebugEnabled(true)
@@ -100,16 +127,7 @@ public class TempMain {
 	        {
 	        	//if (status.getUser().getScreenName().equals("el_angelm"))
 	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
-	        }
-	          
-	    }
-	    catch(TwitterException e)
-	    {
-	    	
-	    }
-	    
-	    String[] usuarios = {"el_angelm"};
-*/
+
 	    
 	}
 }

@@ -68,7 +68,7 @@ public class LocationGUI extends JDialog implements ActionListener {
 			try
 			{
 				int zipCode = Integer.parseInt(str_zipCode);
-				if (zipCode >= 0)
+				if ( (zipCode >= 0) && (str_zipCode.length() == 5) )
 				{
 					myConnection connection = new myConnection("postgres","root");
 					String insertStatus;
@@ -82,7 +82,6 @@ public class LocationGUI extends JDialog implements ActionListener {
 						   location = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
 						   insertStatus = location.insertLocation();
 					   }
-					
 					if (insertStatus != null)
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
