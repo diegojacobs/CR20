@@ -321,7 +321,7 @@ public class Cliente {
 	        String id = Integer.toString(this.getId());
 	        
 	        stmt = this.con.createStatement();
-	        ResultSet rs = stmt.executeQuery( "SELECT * FROM contacto WHERE id = "+ id +";" );
+	        ResultSet rs = stmt.executeQuery( "SELECT * FROM cliente WHERE id = "+ id +";" );
 	        while ( rs.next() ) 
 	        {
 	        	int Id = rs.getInt("id");

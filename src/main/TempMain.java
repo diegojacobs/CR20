@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import classes.Charts;
+
 import Twitter.Tweet;
 import Twitter.TwitterStats;
 
@@ -41,15 +43,23 @@ public class TempMain {
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
 		//VentaGUI frame = new VentaGUI();
+<<<<<<< HEAD
+=======
+		//Charts frame = new Charts();
+>>>>>>> refs/remotes/origin/master
 		//frame.setVisible(true);
 		
 		
-		/*
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
 		Contacto contact = new Contacto(30526044,"dgo@gmail.com","diegoja",connection);
 	
+<<<<<<< HEAD
 
+=======
+		Venta sale = new Venta(1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
+		
+>>>>>>> refs/remotes/origin/master
 		String text = contact.insertContacto();
 		
 		if (text == null)
@@ -62,6 +72,17 @@ public class TempMain {
 		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
 		
+<<<<<<< HEAD
+=======
+		TwitterStats tw = new TwitterStats();
+		tw.insertUser("el_angelm");
+		
+		for (Tweet tweet: tw.getTimeline())
+		{
+			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+		}
+
+>>>>>>> refs/remotes/origin/master
 		//Traer tweets
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 	       cb.setDebugEnabled(true)
@@ -91,6 +112,7 @@ public class TempMain {
 	    
 	    String[] usuarios = {"el_angelm"};
 	    
+<<<<<<< HEAD
 	    */
 	    
 		TwitterStats tw = new TwitterStats();
@@ -104,5 +126,7 @@ public class TempMain {
 				System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
 			}
 		}
+=======
+>>>>>>> refs/remotes/origin/master
 	}
 }

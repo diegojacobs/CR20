@@ -168,6 +168,124 @@ public class Location {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
+	public String selectAllPaises()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "SELECT distinct pais "
+	        		+ "FROM location;" );
+	        while ( rs.next() ) 
+	        {
+	           int Id = 0;
+	           String ciudad = "ciudad";
+	           String pais = rs.getString("pais");
+	           int code  = 0;
+	           String  direccion = "direccion";
+	           
+	           this.all.add(new Location(Id, ciudad, pais, code, direccion));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
+	public String selectPaisesMasVentas()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "select location.pais, count(venta.id) as totalVentas "
+	        		+ "from venta join cliente on (venta.cliente_id = cliente.id) join location on (cliente.location_id = location.id) "
+	        		+ "group by location.pais "
+	        		+ "order by totalVentas desc;" );
+	        while ( rs.next() ) 
+	        {
+	           int Id = 0;
+	           String ciudad = "ciudad";
+	           String pais = rs.getString("pais");
+	           int code  = rs.getInt("totalventas");
+	           String  direccion = "direccion";
+	           
+	           this.all.add(new Location(Id, ciudad, pais, code, direccion));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
+	public String selectPaisesMasClientes()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "select location.pais, count(cliente.id) as totalClientes "
+	        		+ "from cliente join location on (cliente.location_id = location.id) "	        		
+	        		+ "group by location.pais "
+	        		+ "order by totalClientes desc;" );
+	        while ( rs.next() ) 
+	        {
+	           int Id = 0;
+	           String ciudad = "ciudad";
+	           String pais = rs.getString("pais");
+	           int code  = rs.getInt("totalclientes");
+	           String  direccion = "direccion";
+	           
+	           this.all.add(new Location(Id, ciudad, pais, code, direccion));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
 	public String selectLocation()
 	{
 		Statement stmt = null;
