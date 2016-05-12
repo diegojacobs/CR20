@@ -76,7 +76,14 @@ public class LocationGUI extends JFrame {
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
 					else
+					{
 						JOptionPane.showMessageDialog(null, "Location guardada exitosamente", "Location", JOptionPane.PLAIN_MESSAGE);
+						txtCiudad.setText("");
+						txtDireccion.setText("");
+						txtPais.setText("");
+						txtZipCode.setText("");
+						txtCiudad.requestFocus();
+					}
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
