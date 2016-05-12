@@ -28,19 +28,15 @@ public class TempMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
+
 		
-		LocationGUI frame = new LocationGUI();
-=======
-		/*
 		//LocationGUI frame = new LocationGUI();
->>>>>>> refs/remotes/origin/master
 		//PagoGUI frame = new PagoGUI();
-		//VentaGUI frame = new VentaGUI();
+		VentaGUI frame = new VentaGUI();
 		frame.setVisible(true);
 		
 		
-		
+		/*
 		//Connection to DataBase
 		myConnection connection = new myConnection("postgres","root");
 		Contacto contact = new Contacto(30526044,"diego@gmail.com","diego",connection);
@@ -57,7 +53,6 @@ public class TempMain {
 		//contactDB.selectAllContactos();
 		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
-		*/
 		
 		//Traer tweets
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -87,6 +82,8 @@ public class TempMain {
 	    }
 	    
 	    String[] usuarios = {"el_angelm"};
+	    
+	    */
 
 	    
 	}
