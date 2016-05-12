@@ -323,7 +323,7 @@ public class Cliente {
 	        
 	        stmt = this.con.createStatement();
 	        ResultSet rs = stmt.executeQuery( "SELECT * FROM cliente WHERE id = "+ id +";" );
-	        
+	        this.id = -1;
 	        while ( rs.next() ) 
 	        {
 	        	int Id = rs.getInt("id");

@@ -45,8 +45,10 @@ public class TempMain {
 		System.out.println(cliente.selectCliente());
 		
 		clienteGUI pago = new clienteGUI((JFrame)null,cliente);
+		
 		//estadoGUI pago = new estadoGUI((JFrame)null);
 		pago.showDialog();
+		//new vistaDeTabla().setVisible(true);;
 		
 		//gui.showDialog();
 		

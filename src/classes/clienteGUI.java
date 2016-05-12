@@ -58,7 +58,7 @@ public class clienteGUI extends JDialog implements ActionListener {
 	JPanel content_pane;
 	JDateChooser fecha_nacimiento;
 	Choice estado, estado_civil, genero;
-	JButton foto, guardar, cancelar, contacto_button, location_button;
+	JButton foto, guardar, cancelar, contacto_button, location_button, eliminar;
 	ImageIcon foto_imagen;
 	ArrayList<Contacto> contactos = new ArrayList();
 	ArrayList<Location> locations = new ArrayList();
@@ -85,15 +85,23 @@ public class clienteGUI extends JDialog implements ActionListener {
 	public clienteGUI(JFrame frame, Cliente contact){
 		super(frame, "Contacto", true);
 		initialize();
-		cliente_obj = contact;
-		setValues(contact);
+		if (contact.getId()!=-1){
+			cliente_obj = contact;
+			setValues(contact);
+		}else{
+			JOptionPane.showMessageDialog(this, "Cliente no existente");
+		}
 	}
 	
 	public clienteGUI(JDialog frame, Cliente contact){
 		super(frame, "Contacto", true);
 		initialize();
-		cliente_obj = contact;
-		setValues(contact);
+		if (contact.getId()!=-1){
+			cliente_obj = contact;
+			setValues(contact);
+		}else{
+			JOptionPane.showMessageDialog(this, "Cliente no existente");
+		}
 	}
 	
 	private void setValues(Cliente cliente){
@@ -422,6 +430,14 @@ public class clienteGUI extends JDialog implements ActionListener {
 		location_informacion.setBounds(300,220,190, 85);
 		content_pane.add(location_informacion);
 		
+		eliminar = new JButton("Eliminar");
+		eliminar.setToolTipText("Eliminar Cliente");
+		eliminar.addActionListener(this);
+		//Border emptyBorder = BorderFactory.createEmptyBorder();
+		eliminar.setBorder(BorderFactory.createEmptyBorder());
+		//foto 570,10 , 130, 150
+		eliminar.setBounds(630,200,70,25);
+		content_pane.add(eliminar);
 		
 		guardar = new JButton("Guardar");
 		guardar.setToolTipText("Guardar Cliente");
@@ -565,12 +581,14 @@ public class clienteGUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Cliente guardado exitosamente", "Estado", JOptionPane.PLAIN_MESSAGE);
 				if (contactos.size()>1){
 					for (int i = 0; i < contactos.size()-1; i++){
+						contactos.get(i).setCon(new myConnection("postgres","root").getCon());
 						contactos.get(i).deleteContacto();
 					}
 				}
 				
 				if (locations.size()>1){
 					for (int i = 0; i < locations.size()-1; i++){
+						locations.get(i).setCon(new myConnection("postgres","root").getCon());
 						locations.get(i).deleteLocation();
 					}
 				}
@@ -621,6 +639,38 @@ public class clienteGUI extends JDialog implements ActionListener {
 				str += "Direccion: "+location_obj.getDireccion();
 				location_informacion.setText(str);
 			}
+		}else if (e.getSource() == eliminar){
+			System.out.println("eliminar");
+			if (cliente_obj == null){
+				JOptionPane.showMessageDialog(this, "Cliente no aun no definido");
+				return;
+			}
+			int reply = JOptionPane.showConfirmDialog(this,
+					"¿Esta seguro que desea eliminar este Cliente?",
+					"Confirmacion",
+					JOptionPane.YES_NO_OPTION);
+	        if (reply != JOptionPane.YES_OPTION) {
+	        	return;
+	        }
+	        
+	        myConnection connection = new myConnection("postgres","root");
+	        cliente_obj.setCon(connection.getCon());
+			cliente_obj.deleteCliente();
+			for (int i = 0; i < contactos.size(); i++){
+				contactos.get(i).setCon(new myConnection("postgres","root").getCon());
+				contactos.get(i).deleteContacto();
+			}
+			
+			
+			
+			for (int i = 0; i < locations.size()-1; i++){
+				locations.get(i).setCon(new myConnection("postgres","root").getCon());
+				locations.get(i).deleteLocation();
+			}
+			
+			
+			this.dispose();
+			
 		}
 		
 	}
