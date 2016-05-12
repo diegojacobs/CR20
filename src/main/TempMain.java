@@ -29,9 +29,9 @@ public class TempMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//LocationGUI frame = new LocationGUI();
+		LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
-		VentaGUI frame = new VentaGUI();
+		//VentaGUI frame = new VentaGUI();
 		frame.setVisible(true);
 		
 		/*
