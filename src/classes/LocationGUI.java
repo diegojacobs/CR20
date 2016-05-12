@@ -69,9 +69,14 @@ public class LocationGUI extends JFrame {
 				int zipCode = Integer.parseInt(str_zipCode);
 				if (zipCode >= 0)
 				{
+<<<<<<< HEAD
+					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText());
+					String insertStatus = location_user.insertLocation(); 
+=======
 					myConnection connection = new myConnection("postgres","root");
 					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
 					String insertStatus = location_user.insertLocation();
+>>>>>>> refs/remotes/origin/master
 					if (insertStatus != null)
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
