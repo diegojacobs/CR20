@@ -4,7 +4,14 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import Twitter.Tweet;
+import Twitter.TwitterStats;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import classes.Contacto;
 import classes.LocationGUI;
@@ -12,6 +19,7 @@ import classes.PagoGUI;
 import classes.Venta;
 import classes.VentaGUI;
 import connectionDB.myConnection;
+import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -54,6 +62,15 @@ public class TempMain {
 		//contactDB.deleteContacto();
 		//contactDB.updateContacto();
 		
+<<<<<<< HEAD
+		TwitterStats tw = new TwitterStats();
+		tw.insertUser("el_angelm");
+		
+		for (Tweet tweet: tw.getTimeline())
+		{
+			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+		}
+=======
 		//Traer tweets
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 	       cb.setDebugEnabled(true)
@@ -85,6 +102,7 @@ public class TempMain {
 	    
 	    */
 
+>>>>>>> refs/remotes/origin/master
 	    
 	}
 }
