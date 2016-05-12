@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import classes.Charts;
+import javax.swing.JOptionPane;
 
+import classes.ChartsTwitter;
 import Twitter.Tweet;
 import Twitter.TwitterStats;
 
@@ -43,63 +44,30 @@ public class TempMain {
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
 		//VentaGUI frame = new VentaGUI();
+
 		//Charts frame = new Charts();
 		//frame.setVisible(true);
 		
 		
-		//Connection to DataBase
-		myConnection connection = new myConnection("postgres","root");
-		Contacto contact = new Contacto(30526044,"diego@gmail.com","diego",connection);
-	
-		Venta sale = new Venta(1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
-		
-		String text = contact.insertContacto();
-		
-		if (text == null)
-			System.out.println("Exito");
-		else
-			System.out.println(text);
-		//contactDB.selectContacto();
-		//contactDB.selectAllContactos();
-		//contactDB.deleteContacto();
-		//contactDB.updateContacto();
-		
+		//Connection to Twitter		    
 		TwitterStats tw = new TwitterStats();
-		tw.insertUser("el_angelm");
 		
-		for (Tweet tweet: tw.getTimeline())
+		if (tw.validateUser("diegojacobs95"))
 		{
-			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+			tw.insertUser("diegojacobs95");
+			
+			for (Tweet tweet: tw.getTimeline())
+			{
+				System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+			}
+			
+			ChartsTwitter frame = new ChartsTwitter(tw.Hashtags(), tw.Mentions());
+			frame.setVisible(true);
 		}
-
-		//Traer tweets
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-	       cb.setDebugEnabled(true)
-	           .setOAuthConsumerKey("JwdCyEN3QoO3MoAzqVpjItzTa")
-	           .setOAuthConsumerSecret(	"I8BPQROjPq254dxBHzesDVlUZiOVtKEO1aLcVG1xBAelZdo8JK")
-	           .setOAuthAccessToken("69966536-bxn2YRwfhunK0CmyyPcu4Y5VcH9gJldC6k0cU2f7L")
-	           .setOAuthAccessTokenSecret("tjaE9qdjxihwSAt55huJUXBtahGAj3WRQkH2soLK0Fn9i");
-
-	    try 
-	    {
-	    	TwitterFactory factory = new TwitterFactory(cb.build());
-	        Twitter twitter = factory.getInstance();
-	        User user = twitter.verifyCredentials();
-	        List<Status> statusess = twitter.getHomeTimeline();
-	        
-	        for(Status status : statusess)
-	        {
-	        	//if (status.getUser().getScreenName().equals("el_angelm"))
-	        		System.out.println("Showing @"+status.getUser().getScreenName()+" -> " +status.getText());
-	        }
-	          
-	    }
-	    catch(TwitterException e)
-	    {
-	    	
-	    }
-	    
-	    String[] usuarios = {"el_angelm"};
-	    
+		else
+		{
+			JOptionPane.showMessageDialog(null, "El usuario de Twitter no existe", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 }
