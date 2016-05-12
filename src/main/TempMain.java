@@ -34,7 +34,9 @@ public class TempMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		Contacto contacto = new Contacto(123456,"algo@algo","asdfghjkl");
+		new vistaPrincipalGUI().setVisible(true);
+		//new VentaGUI((JFrame)null).showDialog();
+		/*Contacto contacto = new Contacto(123456,"algo@algo","asdfghjkl");
 		//contactGUI gui = new contactGUI((JFrame)null,contacto);
 		
 		

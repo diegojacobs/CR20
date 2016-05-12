@@ -668,7 +668,7 @@ public class clienteGUI extends JDialog implements ActionListener {
 				locations.get(i).deleteLocation();
 			}
 			
-			
+			cliente_obj = null;
 			this.dispose();
 			
 		}
