@@ -1,6 +1,7 @@
 package classes;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.mail.internet.InternetAddress;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,14 +21,23 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class contactGUI extends JFrame implements ActionListener {
+import connectionDB.myConnection;
+
+public class contactGUI extends JDialog implements ActionListener {
 
 	private JPanel content_pane;
 	private JTextField telefono, email, twitter;
 	private JButton guardar, cancelar;
-
-	public contactGUI(){
-		super("Contacto");
+	
+	private Contacto contacto;
+	
+	public contactGUI(JFrame frame){
+		super(frame, "Contacto", true);
+		initialize();
+	}
+	
+	public contactGUI(JDialog frame){
+		super(frame, "Contacto", true);
 		initialize();
 	}
 
@@ -39,17 +50,22 @@ public class contactGUI extends JFrame implements ActionListener {
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
 		//this.setBounds(100, 100, (width/2), (height/2));
-		this.setBounds(100,100,300,170);
+		//this.setBounds(100,100,300,170);
 		//this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		this.setPreferredSize(new Dimension(300,170));
 		
 		content_pane = new JPanel();
-		content_pane.setLayout(null);
+
+		content_pane.setBounds(100, 100,300,170);
 		
 		JScrollPane window = new JScrollPane();
-		this.getContentPane().add(window, BorderLayout.CENTER);
-		window.setViewportView(content_pane);
-		
+		//this.getContentPane().add(window, BorderLayout.CENTER);
+		this.getContentPane().add(content_pane);
+		//window.setViewportView(content_pane);
+
+		content_pane.setLayout(null);
 		
 		JLabel telefono_label = new JLabel("Telefono: ");
 		telefono_label.setBounds(10,10,100, 25);
@@ -97,19 +113,24 @@ public class contactGUI extends JFrame implements ActionListener {
 		cancelar.setBounds(120,100,70,25);
 		content_pane.add(cancelar);
 		
+		this.pack();
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource() == guardar){
 			String str_telefono = telefono.getText();
 			String str_email = email.getText();
 			String str_twitter = twitter.getText();
 			
+			Integer int_telefono;
 			try{
-				Integer int_telefono = Integer.parseInt(str_telefono);
+				if (str_telefono.isEmpty()){
+					JOptionPane.showMessageDialog(this, "Telefono es un campo obligatorio");
+					return;
+				}
+				int_telefono = Integer.parseInt(str_telefono);
 			}catch (Exception ex){
 				JOptionPane.showMessageDialog(this, "Error en la escritura de telefono");
 				return;
@@ -117,14 +138,27 @@ public class contactGUI extends JFrame implements ActionListener {
 			
 			
 		   try {
+			   
 			   InternetAddress emailAddr = new InternetAddress(str_email);
 			   emailAddr.validate();
 		   } catch (Exception ex) {
 			   JOptionPane.showMessageDialog(this, "Error en la escritura de e-mail");
 			   return;
 		   }
+		   
+		   
+		   myConnection connection = new myConnection("postgres","root");
+		   contacto = new Contacto(int_telefono, str_email, str_twitter,connection);
+		   String insertStatus = contacto.insertContacto();
+		   if (insertStatus != null)
+				System.out.println(insertStatus);
+				//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+		   else
+				JOptionPane.showMessageDialog(this, "Contacto guardada exitosamente", "Contacto", JOptionPane.PLAIN_MESSAGE);
 			
-			System.out.println("1 "+str_telefono+" 2 "+str_email+" 3 "+str_twitter);
+		   
+		   this.dispose();
+			//System.out.println("1 "+str_telefono+" 2 "+str_email+" 3 "+str_twitter);
 		}else if (e.getSource() == cancelar){
 			//System.out.println("cancelar");
 			this.dispose();
@@ -133,8 +167,13 @@ public class contactGUI extends JFrame implements ActionListener {
 		
 	}
 	
-	public String prueba(){
-		return "hola";
+	public Contacto getContacto(){
+		return contacto;
+	}
+	
+	public Object showDialog(){
+		this.setVisible(true);
+		return contacto;
 	}
 
 }

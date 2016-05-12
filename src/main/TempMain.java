@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.JDialog;
+
 import classes.Contacto;
 import classes.LocationGUI;
 import classes.PagoGUI;
@@ -32,8 +34,9 @@ public class TempMain {
 		
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
-		clienteGUI frame = new clienteGUI();
-		frame.setVisible(true);
+		clienteGUI frame = new clienteGUI((JDialog)null);
+		Object obj = frame.showDialog();
+		//System.out.println(obj);
 		
 		/*
 		

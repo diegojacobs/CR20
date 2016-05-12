@@ -2,6 +2,7 @@ package classes;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,6 +10,7 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,13 +31,15 @@ import connectionDB.myConnection;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LocationGUI extends JFrame {
+public class LocationGUI extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField txtCiudad;
 	private JTextField txtPais;
 	private JTextField txtDireccion;
 	private JFormattedTextField txtZipCode;
+	
+	private Location location;
 
 	/**
 	 * Launch the application.
@@ -70,13 +74,15 @@ public class LocationGUI extends JFrame {
 				if (zipCode >= 0)
 				{
 					myConnection connection = new myConnection("postgres","root");
-					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
-					String insertStatus = location_user.insertLocation();
+					location = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText(), connection);
+					String insertStatus = location.insertLocation();
 					if (insertStatus != null)
 						System.out.println(insertStatus);
 						//JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
-					else
+					else{
 						JOptionPane.showMessageDialog(null, "Location guardada exitosamente", "Location", JOptionPane.PLAIN_MESSAGE);
+						
+					}
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Error en el ZipCode", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
@@ -105,16 +111,27 @@ public class LocationGUI extends JFrame {
 		}
 	};
 	
+	public LocationGUI(JFrame frame){
+		super(frame, "Direccion", true);
+		initialize();
+	}
+	
+	public LocationGUI(JDialog frame){
+		super(frame, "Direccion", true);
+		initialize();
+	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public LocationGUI() {
-		setTitle("Location");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+	public void  initialize() {
+		//setTitle("Location");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setPreferredSize(new Dimension(450,300));
+		//setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.getContentPane().add(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblCiudad = new JLabel("Ciudad");
@@ -198,5 +215,13 @@ public class LocationGUI extends JFrame {
 		contentPane.add(txtZipCode);
 		*/
 		
+		this.pack();
+		
+	}
+	
+	
+	public Object showDialog(){
+		this.setVisible(true);
+		return location;
 	}
 }

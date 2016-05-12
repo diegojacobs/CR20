@@ -233,7 +233,7 @@ public class Location {
 		    }
 		    else
 		    {
-		    	String id = Integer.toString(rs.getInt("id")+1);
+		    	String id = Integer.toString(1);
 			    this.id = Integer.parseInt(id);
 				String pais = this.getPais();
 				String code = Integer.toString(this.getCodigoPostal());

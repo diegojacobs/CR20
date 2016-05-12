@@ -2,12 +2,14 @@ package classes;
 
 import java.awt.BorderLayout;
 import java.awt.Choice;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
@@ -30,6 +32,7 @@ import javax.mail.internet.InternetAddress;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,16 +48,17 @@ import javax.swing.text.DefaultStyledDocument;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-public class clienteGUI extends JFrame implements ActionListener {
+public class clienteGUI extends JDialog implements ActionListener {
 	
-	JTextField nombre_1, nombre_2, apellido_1, apellido_2, descuento, contacto_informacion, location_informacion;
+	JTextField nombre_1, nombre_2, apellido_1, apellido_2, descuento;
+	JTextPane contacto_informacion,location_informacion;
 	JPanel content_pane;
 	JDateChooser fecha_nacimiento;
 	Choice location, estado, estado_civil, genero;
 	JButton foto, guardar, cancelar, contacto_button, location_button;
 	ImageIcon foto_imagen;
-	ArrayList<Object> contactos;
-	ArrayList<Object> locations;
+	ArrayList<Contacto> contactos = new ArrayList();
+	ArrayList<Location> locations = new ArrayList();
 	
 	int contacto_id;
 	int location_id;
@@ -62,8 +66,17 @@ public class clienteGUI extends JFrame implements ActionListener {
 	File file;
 	JFileChooser fc;
 	
-	public clienteGUI(){
-		super("Cliente");
+	Contacto contacto_obj;
+	Cliente cliente_obj;
+	Location location_obj;
+	
+	public clienteGUI(JFrame frame){
+		super(frame, "Cliente", true);
+		initialize();
+	}
+	
+	public clienteGUI(JDialog frame){
+		super(frame, "Cliente", true);
 		initialize();
 	}
 	
@@ -71,13 +84,19 @@ public class clienteGUI extends JFrame implements ActionListener {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		int width = gd.getDisplayMode().getWidth();
 		int height = gd.getDisplayMode().getHeight();
-		this.setBounds(100, 100,730,360);// (width/2), (height/2));
+		//this.setBounds(100, 100,730,360);// (width/2), (height/2));
 		//this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setPreferredSize(new Dimension(730,360));
 		
 		fc = new JFileChooser();
 		content_pane = new JPanel();
+		content_pane.setBounds(100, 100,730,360);
 		//content_pane.setBounds(0,0, 400, 400);
+		this.getContentPane().add(content_pane);
+		
+		//this.setVisible(true);
+
 		
 		JScrollPane window = new JScrollPane();
 		this.getContentPane().add(window, BorderLayout.CENTER);
@@ -218,7 +237,7 @@ public class clienteGUI extends JFrame implements ActionListener {
 		contacto_button.setBounds(380,70,110,25);
 		content_pane.add(contacto_button);
 		
-		contacto_informacion = new JTextField();
+		contacto_informacion = new JTextPane();
 		contacto_informacion.setEditable(false);
 		contacto_informacion.setBounds(300,100,190, 85);
 		content_pane.add(contacto_informacion);
@@ -256,10 +275,10 @@ public class clienteGUI extends JFrame implements ActionListener {
 		location_button.setBounds(380,190,110,25);
 		content_pane.add(location_button);
 		
-		contacto_informacion = new JTextField();
-		contacto_informacion.setEditable(false);
-		contacto_informacion.setBounds(300,220,190, 85);
-		content_pane.add(contacto_informacion);
+		location_informacion = new JTextPane();
+		location_informacion.setEditable(false);
+		location_informacion.setBounds(300,220,190, 85);
+		content_pane.add(location_informacion);
 		
 		
 		guardar = new JButton("Guardar");
@@ -278,6 +297,8 @@ public class clienteGUI extends JFrame implements ActionListener {
 		cancelar.setBorder(BorderFactory.createEmptyBorder());
 		cancelar.setBounds(630,280,70,25);
 		content_pane.add(cancelar);
+		
+		this.pack();
 		
 	}
 	
@@ -346,8 +367,19 @@ public class clienteGUI extends JFrame implements ActionListener {
 				return;
 			}
 			
+			if ( contacto_obj == null){
+				JOptionPane.showMessageDialog(this, "Contacto es un campo obligatorio");
+				return;
+			}
 			
 			
+			if (contactos.size()>1){
+				for (int i = 0; i < contactos.size()-1; i++){
+					contactos.get(i).deleteContacto();
+				}
+			}
+			
+			this.dispose();
 			
 		}else if (e.getSource() == cancelar){
 			//System.out.println("cancelar");
@@ -359,8 +391,30 @@ public class clienteGUI extends JFrame implements ActionListener {
 		}else if (e.getSource() == foto){
 			open();
 		}else if (e.getSource() == contacto_button){
-			contactGUI ctg = new contactGUI();
-			ctg.setVisible(true);
+			contactGUI ctg = new contactGUI(this);
+			Object obj = ctg.showDialog();
+			if (obj != null){
+				contacto_obj = (Contacto)obj;
+				contactos.add(contacto_obj);
+				String str = "";
+				str += "Telefono: "+contacto_obj.getTelefono()+"\n";
+				str += "e-mail: "+contacto_obj.getEmail()+"\n";
+				str += "twitter: "+contacto_obj.getTwitter();
+				contacto_informacion.setText(str);
+			}
+			
+		}else if (e.getSource()== location_button){
+			LocationGUI ctg = new LocationGUI(this);
+			Object obj = ctg.showDialog();
+			if (obj != null){
+				location_obj = (Location)obj;
+				locations.add(location_obj);
+				String str = "";
+				str += "Ciudad: "+location_obj.getCiudad()+"\n";
+				str += "Codigo Postal: "+location_obj.getCodigoPostal()+"\n";
+				str += "Direccion: "+location_obj.getDireccion();
+				location_informacion.setText(str);
+			}
 		}
 		
 	}
@@ -415,6 +469,11 @@ public class clienteGUI extends JFrame implements ActionListener {
         
         	//System.out.println(file.getAbsolutePath());
         }
+	}
+	
+	public Object showDialog(){
+		this.setVisible(true);
+		return cliente_obj;
 	}
 	
 	
