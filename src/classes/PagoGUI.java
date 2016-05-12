@@ -62,14 +62,11 @@ public class PagoGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-<<<<<<< HEAD
-			Pago pago_user = new Pago(txtDesc.getText());			
-			String insertStatus = pago_user.insertPago(); 
-=======
+
 			myConnection connection = new myConnection("postgres","root");
 			Pago pago_user = new Pago(txtDesc.getText(), connection.getCon());
 			String insertStatus = pago_user.insertPago();
->>>>>>> refs/remotes/origin/master
+
 			if (insertStatus != null)
 				System.out.println(insertStatus);
 			else

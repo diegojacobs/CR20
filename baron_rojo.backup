@@ -4,11 +4,7 @@
 
 -- Dumped from database version 9.2.14
 -- Dumped by pg_dump version 9.2.14
-<<<<<<< HEAD
--- Started on 2016-05-11 19:40:43
-=======
--- Started on 2016-05-11 18:31:29
->>>>>>> refs/remotes/origin/master
+-- Started on 2016-05-11 19:54:50
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -36,11 +32,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
-<<<<<<< HEAD
 -- TOC entry 191 (class 1255 OID 33490)
-=======
--- TOC entry 188 (class 1255 OID 16793)
->>>>>>> refs/remotes/origin/master
 -- Name: editar_cliente(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -89,7 +81,6 @@ CREATE FUNCTION editar_cliente3() RETURNS trigger
         IF NEW.location_id not in (select id from location) THEN
             RAISE EXCEPTION 'El id de dirección no hace referencia a ninguna direccion';
         END IF;
-<<<<<<< HEAD
         RETURN NEW;
     END;
 $$;
@@ -106,8 +97,6 @@ CREATE FUNCTION editar_cliente4() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
     BEGIN
-=======
->>>>>>> refs/remotes/origin/master
         IF NEW.contacto_id not in (select id from contacto) THEN
             RAISE EXCEPTION 'El id de contacto no hace referencia a ningun contacto';
         END IF;
@@ -243,7 +232,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 168 (class 1259 OID 16794)
+-- TOC entry 168 (class 1259 OID 33049)
 -- Name: cliente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -253,7 +242,7 @@ CREATE TABLE cliente (
     segundo_nombre text,
     primer_apellido text,
     segundo_apellido text,
-    fecha_de_nacimiento date,
+    fecha_de_nacimineto date,
     location_id integer,
     contacto_id integer,
     estado_id integer,
@@ -267,7 +256,7 @@ CREATE TABLE cliente (
 ALTER TABLE public.cliente OWNER TO postgres;
 
 --
--- TOC entry 169 (class 1259 OID 16800)
+-- TOC entry 171 (class 1259 OID 33081)
 -- Name: contacto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -282,7 +271,7 @@ CREATE TABLE contacto (
 ALTER TABLE public.contacto OWNER TO postgres;
 
 --
--- TOC entry 170 (class 1259 OID 16806)
+-- TOC entry 169 (class 1259 OID 33065)
 -- Name: estado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -295,7 +284,7 @@ CREATE TABLE estado (
 ALTER TABLE public.estado OWNER TO postgres;
 
 --
--- TOC entry 171 (class 1259 OID 16812)
+-- TOC entry 174 (class 1259 OID 33277)
 -- Name: estado_civil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -308,7 +297,7 @@ CREATE TABLE estado_civil (
 ALTER TABLE public.estado_civil OWNER TO postgres;
 
 --
--- TOC entry 172 (class 1259 OID 16818)
+-- TOC entry 170 (class 1259 OID 33073)
 -- Name: location; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -324,7 +313,7 @@ CREATE TABLE location (
 ALTER TABLE public.location OWNER TO postgres;
 
 --
--- TOC entry 173 (class 1259 OID 16824)
+-- TOC entry 172 (class 1259 OID 33094)
 -- Name: pago; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -337,7 +326,7 @@ CREATE TABLE pago (
 ALTER TABLE public.pago OWNER TO postgres;
 
 --
--- TOC entry 174 (class 1259 OID 16830)
+-- TOC entry 173 (class 1259 OID 33257)
 -- Name: venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -353,148 +342,95 @@ CREATE TABLE venta (
 ALTER TABLE public.venta OWNER TO postgres;
 
 --
-<<<<<<< HEAD
 -- TOC entry 1986 (class 0 OID 33049)
-=======
--- TOC entry 1968 (class 0 OID 16794)
->>>>>>> refs/remotes/origin/master
 -- Dependencies: 168
 -- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-<<<<<<< HEAD
 COPY cliente (id, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, fecha_de_nacimineto, location_id, contacto_id, estado_id, descuento, image, genero, estado_civil_id) FROM stdin;
 1	Diego	Javier	Jacobs	Tercero	1995-05-09	1	1	1	0	c:/images/foto.png	t	2
-=======
-COPY cliente (id, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, fecha_de_nacimiento, location_id, contacto_id, estado_id, descuento, image, genero, estado_civil_id) FROM stdin;
-1	Angel	Pancho	Morales	de Retolaza	1995-06-06	1	1	1	0.20000000000000001	C:\\\\Porno	t	1
->>>>>>> refs/remotes/origin/master
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1989 (class 0 OID 33081)
 -- Dependencies: 171
-=======
--- TOC entry 1969 (class 0 OID 16800)
--- Dependencies: 169
->>>>>>> refs/remotes/origin/master
 -- Data for Name: contacto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY contacto (id, telefono, email, twitter) FROM stdin;
-<<<<<<< HEAD
 6	30526044	diegojacobs@gmail.com	diegojacobs
 1	30526044	diegojacobs9595@gmail.com	diegojacobs95
 9	30526044	diego@gmail.com	diego
-=======
-1	54562123	jowy@gmail.com	jowyMorales
->>>>>>> refs/remotes/origin/master
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1987 (class 0 OID 33065)
 -- Dependencies: 169
-=======
--- TOC entry 1970 (class 0 OID 16806)
--- Dependencies: 170
->>>>>>> refs/remotes/origin/master
 -- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY estado (id, descripcion) FROM stdin;
 1	Activo
+2	Frecuente
+3	Inactivo
+4	Pasivo
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1992 (class 0 OID 33277)
 -- Dependencies: 174
-=======
--- TOC entry 1971 (class 0 OID 16812)
--- Dependencies: 171
->>>>>>> refs/remotes/origin/master
 -- Data for Name: estado_civil; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY estado_civil (id, descripcion) FROM stdin;
 1	Casado
+2	Soltero
+3	Divorciado
+4	Viudo
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1988 (class 0 OID 33073)
 -- Dependencies: 170
-=======
--- TOC entry 1972 (class 0 OID 16818)
--- Dependencies: 172
->>>>>>> refs/remotes/origin/master
 -- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY location (id, ciudad, pais, zipcode, direccion) FROM stdin;
-<<<<<<< HEAD
 1	Guatemala	Guatemala	1016	Zona 16
-=======
-1	Xela	Guatemala	1730	null
-2	Guatemala	Guatemala	1111	La Sexta
->>>>>>> refs/remotes/origin/master
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1990 (class 0 OID 33094)
 -- Dependencies: 172
-=======
--- TOC entry 1973 (class 0 OID 16824)
--- Dependencies: 173
->>>>>>> refs/remotes/origin/master
 -- Data for Name: pago; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY pago (id, descripcion) FROM stdin;
 1	Tarjeta de Credito
-2	Efectivo
-3	Sexo
-4	Fichas
+2	Tarjeta de Debito
+3	Efectivo
+4	Cheque
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1991 (class 0 OID 33257)
 -- Dependencies: 173
-=======
--- TOC entry 1974 (class 0 OID 16830)
--- Dependencies: 174
->>>>>>> refs/remotes/origin/master
 -- Data for Name: venta; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY venta (id, pago_id, total, cliente_id, dia) FROM stdin;
-<<<<<<< HEAD
 1	1	12.5	1	3916-01-30
-=======
-1	4	20	1	2016-05-09
-2	3	0	1	2016-05-09
-3	3	0	1	2016-05-01
-4	1	5	1	2016-03-20
->>>>>>> refs/remotes/origin/master
 \.
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1849 (class 2606 OID 33056)
-=======
--- TOC entry 1840 (class 2606 OID 16834)
->>>>>>> refs/remotes/origin/master
 -- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -503,11 +439,7 @@ ALTER TABLE ONLY cliente
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1855 (class 2606 OID 33306)
-=======
--- TOC entry 1842 (class 2606 OID 16836)
->>>>>>> refs/remotes/origin/master
 -- Name: contact_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -516,11 +448,7 @@ ALTER TABLE ONLY contacto
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1857 (class 2606 OID 33088)
-=======
--- TOC entry 1844 (class 2606 OID 16838)
->>>>>>> refs/remotes/origin/master
 -- Name: contact_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -529,11 +457,7 @@ ALTER TABLE ONLY contacto
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1863 (class 2606 OID 33284)
-=======
--- TOC entry 1848 (class 2606 OID 16840)
->>>>>>> refs/remotes/origin/master
 -- Name: estado_civil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -542,11 +466,7 @@ ALTER TABLE ONLY estado_civil
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1853 (class 2606 OID 33080)
-=======
--- TOC entry 1850 (class 2606 OID 16842)
->>>>>>> refs/remotes/origin/master
 -- Name: location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -555,11 +475,7 @@ ALTER TABLE ONLY location
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1859 (class 2606 OID 33101)
-=======
--- TOC entry 1852 (class 2606 OID 16844)
->>>>>>> refs/remotes/origin/master
 -- Name: pago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -568,11 +484,7 @@ ALTER TABLE ONLY pago
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1851 (class 2606 OID 33072)
-=======
--- TOC entry 1846 (class 2606 OID 16846)
->>>>>>> refs/remotes/origin/master
 -- Name: state_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -581,11 +493,7 @@ ALTER TABLE ONLY estado
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1861 (class 2606 OID 33261)
-=======
--- TOC entry 1854 (class 2606 OID 16848)
->>>>>>> refs/remotes/origin/master
 -- Name: venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -594,11 +502,7 @@ ALTER TABLE ONLY venta
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1870 (class 2620 OID 33491)
-=======
--- TOC entry 1861 (class 2620 OID 16849)
->>>>>>> refs/remotes/origin/master
 -- Name: editarcliente; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -606,7 +510,6 @@ CREATE TRIGGER editarcliente BEFORE INSERT OR UPDATE ON cliente FOR EACH ROW EXE
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1871 (class 2620 OID 33493)
 -- Name: editarcliente2; Type: TRIGGER; Schema: public; Owner: postgres
 --
@@ -680,9 +583,6 @@ CREATE TRIGGER editarventa2 BEFORE INSERT OR UPDATE ON venta FOR EACH ROW EXECUT
 
 --
 -- TOC entry 1864 (class 2606 OID 33407)
-=======
--- TOC entry 1855 (class 2606 OID 16880)
->>>>>>> refs/remotes/origin/master
 -- Name: cliente_contacto_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -691,11 +591,7 @@ ALTER TABLE ONLY cliente
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1865 (class 2606 OID 33412)
-=======
--- TOC entry 1856 (class 2606 OID 16885)
->>>>>>> refs/remotes/origin/master
 -- Name: cliente_estado_civil_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -704,11 +600,7 @@ ALTER TABLE ONLY cliente
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1866 (class 2606 OID 33417)
-=======
--- TOC entry 1857 (class 2606 OID 16890)
->>>>>>> refs/remotes/origin/master
 -- Name: cliente_estado_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -717,11 +609,7 @@ ALTER TABLE ONLY cliente
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1867 (class 2606 OID 33422)
-=======
--- TOC entry 1858 (class 2606 OID 16895)
->>>>>>> refs/remotes/origin/master
 -- Name: cliente_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -730,11 +618,7 @@ ALTER TABLE ONLY cliente
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1868 (class 2606 OID 33504)
-=======
--- TOC entry 1859 (class 2606 OID 16900)
->>>>>>> refs/remotes/origin/master
 -- Name: venta_cliente_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -743,11 +627,7 @@ ALTER TABLE ONLY venta
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1869 (class 2606 OID 33509)
-=======
--- TOC entry 1860 (class 2606 OID 16905)
->>>>>>> refs/remotes/origin/master
 -- Name: venta_pago_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -756,13 +636,8 @@ ALTER TABLE ONLY venta
 
 
 --
-<<<<<<< HEAD
 -- TOC entry 1999 (class 0 OID 0)
 -- Dependencies: 5
-=======
--- TOC entry 1981 (class 0 OID 0)
--- Dependencies: 6
->>>>>>> refs/remotes/origin/master
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
@@ -772,11 +647,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
-<<<<<<< HEAD
--- Completed on 2016-05-11 19:40:44
-=======
--- Completed on 2016-05-11 18:31:32
->>>>>>> refs/remotes/origin/master
+-- Completed on 2016-05-11 19:54:50
 
 --
 -- PostgreSQL database dump complete
