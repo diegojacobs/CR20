@@ -67,7 +67,7 @@ public class LocationGUI extends JFrame {
 			try
 			{
 				int zipCode = Integer.parseInt(str_zipCode);
-				if (zipCode >= 0)
+				if ( (zipCode >= 0) && (str_zipCode.length() == 5) )
 				{
 <<<<<<< HEAD
 					Location location_user = new Location(txtCiudad.getText(), txtPais.getText(), zipCode, txtDireccion.getText());
