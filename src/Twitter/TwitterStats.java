@@ -1,6 +1,7 @@
 package Twitter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,6 +77,76 @@ public class TwitterStats {
 		Document doc = this.collection.find(eq("User", user)).first();
 		TwitterUser tuitero = this.gson.fromJson(doc.getString("TimeLine"), TwitterUser.class);
 		this.tuitero = tuitero;
+	}
+	
+	public HashMap<String, Integer> days(ArrayList<String> users)
+	{
+		HashMap<String, Integer> marc = new HashMap();
+		
+		marc.put("Domingo", 0);
+		marc.put("Lunes", 0);
+		marc.put("Martes", 0);
+		marc.put("Miercoles", 0);
+		marc.put("Jueves", 0);
+		marc.put("Viernes", 0);
+		marc.put("Sabado", 0);
+		
+		for (String user : users)
+		{
+			if (this.validateUser(user))
+			{
+				this.usuario = twitter.getUser(user);
+				List<Status> tweets = twitter.getUserTimeLine(usuario, 1, 200);
+				
+				if (tweets != null)
+				{				
+					for (Status tweet: tweets)
+					{
+						Date dia = tweet.getCreatedAt();
+						switch(dia.getDay())
+						{
+							case 0:
+								int cont = marc.get("Domingo");
+								cont++;
+								marc.put("Domingo", cont);
+								break;
+							case 1:
+								int cont1 = marc.get("Lunes");
+								cont1++;
+								marc.put("Lunes", cont1);
+								break;
+							case 2:
+								int cont2 = marc.get("Martes");
+								cont2++;
+								marc.put("Martes", cont2);
+								break;
+							case 3:
+								int cont3 = marc.get("Miercoles");
+								cont3++;
+								marc.put("Miercoles", cont3);
+								break;
+							case 4:
+								int cont4 = marc.get("Jueves");
+								cont4++;
+								marc.put("Jueves", cont4);
+								break;
+							case 5:
+								int cont5 = marc.get("Viernes");
+								cont5++;
+								marc.put("Viernes", cont5);
+								break;
+							case 6:
+								int cont6 = marc.get("Sabado");
+								cont6++;
+								marc.put("Sabado", cont6);
+								break;
+						}
+					}
+				}
+			}
+		}
+		
+		return marc;
 	}
 	
 	public HashMap<String, String> Hashtags()

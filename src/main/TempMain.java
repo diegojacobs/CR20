@@ -1,40 +1,7 @@
 package main;
 
-<<<<<<< HEAD
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
-import classes.ChartsTwitter;
-import Twitter.Tweet;
-import Twitter.TwitterStats;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import classes.Contacto;
-import classes.LocationGUI;
-import classes.PagoGUI;
-import classes.Venta;
-import classes.VentaGUI;
-import connectionDB.myConnection;
-import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.conf.ConfigurationBuilder;
-=======
 import classes.Charts;
 import classes.vistaPrincipalGUI;
->>>>>>> refs/remotes/origin/master
 
 /**
 @author Diego Jacobs
@@ -138,5 +105,3 @@ public class TempMain {
 
 	    
 	}*/
-
->>>>>>> refs/remotes/origin/master

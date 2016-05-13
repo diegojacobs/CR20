@@ -185,7 +185,7 @@ public class ChartsTwitter extends JFrame {
 			sortedMentions.put(entry.getKey(), entry.getValue());
 		}
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(10, 10, 744, 514);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

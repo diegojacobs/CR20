@@ -310,6 +310,52 @@ public class Cliente {
 	 * Devolvemos null si se realizo con exito
 	 * Devolvemos el error si existio alguno
 	 */
+	public String selectAllTwitters()
+	{
+		Statement stmt = null;
+		
+		try
+		{
+			//this.con.setAutoCommit(false);
+	        System.out.println("Opened database successfully");
+	        
+	        stmt = this.con.createStatement();
+	        ResultSet rs = stmt.executeQuery( "select contacto.twitter "
+	        		+ "from cliente join contacto on (cliente.contacto_id = contacto.id);" );
+	        while ( rs.next() ) 
+	        {
+	           int Id = 0;
+	           String primern = rs.getString("twitter");
+	           String segundon = "";
+	           String primera = "";
+	           String segundoa = "";
+	           Date fecha = null;
+	           int locationID = 0;
+	           int stateID = 0;
+	           int contactoID = 0;
+	           Double desc = 0.0;
+	           String  image = "";;
+	           boolean genero = false;
+	           int estadoCivilID  = 0;
+	           
+	           this.all.add(new Cliente(Id, primern, segundon, primera, segundoa, fecha, locationID, contactoID, stateID, desc, image, genero, estadoCivilID));
+	        }
+	        rs.close();
+	        stmt.close();
+	        this.con.close();
+		} 
+		catch ( Exception e ) 
+		{
+			return e.getClass().getName()+": "+ e.getMessage();
+		}
+		
+	    return null;
+    }
+	
+	/*
+	 * Devolvemos null si se realizo con exito
+	 * Devolvemos el error si existio alguno
+	 */
 	public String selectCliente()
 	{
 		Statement stmt = null;
