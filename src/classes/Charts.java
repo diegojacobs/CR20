@@ -435,7 +435,7 @@ public class Charts extends JFrame implements ActionListener {
 	public Charts() {
 		setTitle("CRM20 - UVG");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(10, 10, 1542, 1010);
+		setBounds(10, 10, 1542, 983);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
