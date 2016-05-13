@@ -165,7 +165,18 @@ public class VentaGUI extends JDialog implements ActionListener {
 	}
 	
 	public void setValues(Venta venta){
-		
+		txtTotal.setText(""+venta.getTotal());
+		calendar.setDate(venta.getDia());
+		for (int i = 0;i<pagos.size();i++){
+			if (venta.getPagoID()==pagos.get(i).getId()){
+				comboBoxPago.setSelectedIndex(i);
+			}
+		}
+		for (int i = 0;i<clientes.size();i++){
+			if (venta.getClienteID()==clientes.get(i).getId()){
+				comboBoxCliente.setSelectedIndex(i);
+			}
+		}
 	}
 	
 	/**

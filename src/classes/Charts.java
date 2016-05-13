@@ -22,10 +22,14 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+import Twitter.Tweet;
+import Twitter.TwitterStats;
 import connectionDB.myConnection;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
@@ -48,6 +52,7 @@ public class Charts extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JPanel panelG1; 
 	private JPanel panelG2;
+	private JPanel panelG4;
 	private JCheckBox chckbxMasculino;
 	private JCheckBox chckbxFemenino;
 	private JCheckBox chckbxVentas;
@@ -363,13 +368,74 @@ public class Charts extends JFrame implements ActionListener {
 			}
 		}
 	};
+	
+	/**
+	 * OnClick G4
+	 * BarChart Dia de la semana vrs Cantidad de Tweets
+	 */
+	private ActionListener generarG4 = new ActionListener() {		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+			String chart_title = "Cantidad de Tweets por dia de la semana";
+			
+			connection = new myConnection("postgres","root");
+			Cliente clientes_data = new Cliente();
+			clientes_data.setCon(connection.getCon());
+			String status = clientes_data.selectAllTwitters();
+			ArrayList<Cliente> clientes = clientes_data.getAll();
+			
+			ArrayList<String> clientesTwitter = new ArrayList<String>();
+			for (Cliente i: clientes)
+				clientesTwitter.add(i.getPrimerNombre());
+						
+			if (status != null)
+				System.out.println(status);
+			else
+			{
+				// Establecer dataset
+				DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+				String serie = "Total de ventas";
+				
+				//Connection to Twitter		    
+	    		TwitterStats tw = new TwitterStats();
+	    		clientesTwitter = new ArrayList<String>();
+	    		clientesTwitter.add("DanielOrozco_95");
+	    		clientesTwitter.add("diegojacobs95");
+	    		clientesTwitter.add("el_angelm");
+	    		clientesTwitter.add("Ronald_MacKay");
+	    		clientesTwitter.add("2010MisterChip");
+	    		HashMap<String, Integer> hashTw = tw.days(clientesTwitter);
+	    		
+	    		for (Map.Entry<String, Integer> entry: hashTw.entrySet())
+					dataset.addValue(entry.getValue(), serie, entry.getKey());
+	    		
+				// Crear chart
+				JFreeChart chart = ChartFactory.createBarChart(chart_title, "Dia de la semana", "Tweets", dataset, PlotOrientation.VERTICAL, false, true, false);
+				//Modificamos el diseño del chart
+				CategoryPlot plot = (CategoryPlot) chart.getPlot();
+				BarRenderer renderer = (BarRenderer) plot.getRenderer();
+				Color blue = new Color(53, 112, 173);
+				renderer.setSeriesPaint(0, blue);
+				chart.setAntiAlias(true);
+				chart.setBackgroundPaint(new Color(214, 217, 223));
+				panelG4.removeAll();
+				panelG4.repaint();
+				panelG4.setLayout(new java.awt.BorderLayout());
+				panelG4.add(new ChartPanel(chart));
+				panelG4.validate();
+			}
+		}
+	};
 
 	/**
 	 * Create the frame.
 	 */
 	public Charts() {
+		setTitle("CRM20 - UVG");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(10, 10, 1542, 551);
+		setBounds(10, 10, 1542, 983);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -468,6 +534,23 @@ public class Charts extends JFrame implements ActionListener {
 		}
 		
 		parentG2.add(comboBoxNPaises);
+		
+		JPanel parentG4 = new JPanel();
+		parentG4.setLayout(null);
+		parentG4.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		parentG4.setBounds(42, 485, 702, 403);
+		contentPane.add(parentG4);
+		
+		panelG4 = new JPanel();
+		panelG4.setBackground(new Color(214, 217, 223));
+		panelG4.setBounds(12, 51, 678, 339);
+		parentG4.add(panelG4);
+		
+		JButton btnG4 = new JButton("GENERAR CHART - Tweets por dia de la semana");
+		btnG4.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnG4.addActionListener(generarG4);
+		btnG4.setBounds(173, 13, 366, 25);
+		parentG4.add(btnG4);
 		
 	}
 }

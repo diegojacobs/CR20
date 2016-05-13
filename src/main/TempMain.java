@@ -47,35 +47,41 @@ public class TempMain {
 		//LocationGUI frame = new LocationGUI();
 		//PagoGUI frame = new PagoGUI();
 		//VentaGUI frame = new VentaGUI();
+<<<<<<< HEAD
+
+		//Charts frame = new Charts();
+		//frame.setVisible(true);
+=======
 		Charts frame = new Charts();
 		frame.setVisible(true);*//*
 >>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master
 		
 		
-		//Connection to DataBase
-		myConnection connection = new myConnection("postgres","root");
-		Contacto contact = new Contacto(30526044,"diego@gmail.com","diego",connection);
-	
-		Venta sale = new Venta(1, 1, 10, 12.5, new Date(2015, 12, 30), connection);
-		
-		String text = contact.insertContacto();
-		
-		if (text == null)
-			System.out.println("Exito");
-		else
-			System.out.println(text);
-		//contactDB.selectContacto();
-		//contactDB.selectAllContactos();
-		//contactDB.deleteContacto();
-		//contactDB.updateContacto();
-		
+		//Connection to Twitter		    
 		TwitterStats tw = new TwitterStats();
-		tw.insertUser("el_angelm");
 		
-		for (Tweet tweet: tw.getTimeline())
+		if (tw.validateUser("diegojacobs95"))
 		{
-			System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+			tw.insertUser("diegojacobs95");
+			
+			for (Tweet tweet: tw.getTimeline())
+			{
+				System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+			}
+			
+			ChartsTwitter frame = new ChartsTwitter(tw.Hashtags(), tw.Mentions());
+			frame.setVisible(true);
 		}
+<<<<<<< HEAD
+		else
+		{
+			JOptionPane.showMessageDialog(null, "El usuario de Twitter no existe", "Error en el ingreso de datos", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+}
+=======
 
 		//Traer tweets
 		/*ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -99,4 +105,3 @@ public class TempMain {
 
 	    
 	}*/
-

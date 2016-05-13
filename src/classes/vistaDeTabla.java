@@ -39,6 +39,8 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import Twitter.Tweet;
+import Twitter.TwitterStats;
 import connectionDB.myConnection;
 
 public class vistaDeTabla extends JFrame implements ActionListener{
@@ -391,12 +393,52 @@ public class vistaDeTabla extends JFrame implements ActionListener{
 		        if (contacto.getTwitter().isEmpty()){
 		        	JOptionPane.showMessageDialog(null, "Twitter no definido");
 		        }
+		        else
+		        {
+		        	//Connection to Twitter		    
+		    		TwitterStats tw = new TwitterStats();
+		    		
+		    		if (tw.validateUser(contacto.getTwitter()))
+		    		{
+		    			tw.insertUser(contacto.getTwitter());
+		    			
+		    			for (Tweet tweet: tw.getTimeline())
+		    			{
+		    				System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+		    			}
+		    			
+		    			ChartsTwitter frame = new ChartsTwitter(tw.Hashtags(), tw.Mentions());
+		    			frame.setVisible(true);
+		    		}
+		    		else
+		    			JOptionPane.showMessageDialog(null, "El usuario de Twitter no existe", "Error", JOptionPane.ERROR_MESSAGE);
+		        }
 				break;
 			case "contacto":
 				Contacto contacto2 = (Contacto)objeto;
 				if (contacto2.getAll().get(modelRow).getTwitter().isEmpty()){
 
 		        	JOptionPane.showMessageDialog(null, "Twitter no definido");
+				}
+				else
+				{
+					//Connection to Twitter		    
+		    		TwitterStats tw = new TwitterStats();
+		    		
+		    		if (tw.validateUser(contacto2.getAll().get(modelRow).getTwitter()))
+		    		{
+		    			tw.insertUser(contacto2.getAll().get(modelRow).getTwitter());
+		    			
+		    			for (Tweet tweet: tw.getTimeline())
+		    			{
+		    				System.out.println("Tweet: " + tweet.getTweet() + " Fecha:" + tweet.getFecha().toString());
+		    			}
+		    			
+		    			ChartsTwitter frame = new ChartsTwitter(tw.Hashtags(), tw.Mentions());
+		    			frame.setVisible(true);
+		    		}
+		    		else
+		    			JOptionPane.showMessageDialog(null, "El usuario de Twitter no existe", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				break;
