@@ -24,6 +24,9 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,12 +43,15 @@ import Twitter.Tweet;
 import Twitter.TwitterStats;
 import connectionDB.myConnection;
 
-public class vistaDeTabla extends JFrame {
+public class vistaDeTabla extends JFrame implements ActionListener{
 	
 	private String tipo_tabla;
 	private Object objeto;
 	private ArrayList<JCheckBox> columns = new ArrayList();
 	private JTable table = null;
+	Vector<String> columnNames_public;
+	
+	
 
 	public vistaDeTabla(String tipo_tabla){
 		this.tipo_tabla = tipo_tabla;
@@ -56,6 +62,17 @@ public class vistaDeTabla extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		newInstance(tipo_tabla);
 		algo();
+		
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("Filtro");
+		menuBar.add(mnNewMenu);
+		JMenuItem item = new JMenuItem("Nueva comparacion");
+		mnNewMenu.add(item);
+		item.addActionListener(this);
+		item.setActionCommand("nueva_query");
+		
 	}
 	
 	public void newInstance(String tipo){
@@ -169,6 +186,67 @@ public class vistaDeTabla extends JFrame {
 			}
 		}
 	}
+	
+	public void algo(String query){
+		try{
+			
+			Connection con = new myConnection("postgres","root").getCon();
+			con.setAutoCommit(false);
+			Statement stmt = con.createStatement();
+		    
+		    ResultSet rs = stmt.executeQuery( query+";" );
+
+		    table = new JTable(buildTableModel(rs));
+		    table.setRowHeight(20);
+		    
+		    ButtonColumn buttoncolumn = new ButtonColumn(table,delete,table.getColumnCount()-1);
+		    ButtonColumn buttoncolumn2 = new ButtonColumn(table,edit,table.getColumnCount()-2);
+		    ButtonColumn buttoncolumn3;
+		    if (tipo_tabla.equals("cliente") || tipo_tabla.equals("contacto"))
+		    	buttoncolumn3 = new ButtonColumn (table, twitter, table.getColumnCount()-3);
+		    
+		    
+		    
+		}catch (Exception e){
+			
+		}
+		if (table != null){
+
+		    JScrollPane scrollPane_1 = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		    this.getContentPane().removeAll();
+		    this.getContentPane().add(scrollPane_1,BorderLayout.CENTER);
+		    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		    
+		    JToolBar toolBar = new JToolBar();
+			this.getContentPane().add(toolBar, BorderLayout.NORTH);
+			
+			
+			for (JCheckBox temp: columns){
+				temp.addItemListener(new ItemListener() {
+		    	      public void itemStateChanged(ItemEvent e) {
+    	    	        if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+    	    	            //do something...
+    	    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMinWidth(20);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMaxWidth(300);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setPreferredWidth(100);
+    	    	        } else {//checkbox has been deselected
+    	    	            //do something...
+    	    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMinWidth(0);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setMaxWidth(0);
+		    	        	table.getColumnModel().getColumn(columns.indexOf(temp)).setPreferredWidth(0);
+		    	        	
+    	    	        };
+		    	   
+		    	      }
+		    	    });
+				toolBar.add(temp);
+				
+			}
+				
+			
+		}
+	}
+	
 	
 	Action delete = new AbstractAction(){
 		public void actionPerformed(ActionEvent e){
@@ -378,12 +456,14 @@ public class vistaDeTabla extends JFrame {
 
 	    // names of columns
 	    Vector<String> columnNames = new Vector<String>();
+	    columnNames_public = new Vector<String>();
 	    int columnCount = metaData.getColumnCount();
 	    for (int column = 1; column <= columnCount; column++) {
 	    	JCheckBox temp = new JCheckBox(metaData.getColumnName(column),true);
 	    	
 	    	columns.add(temp);
 	        columnNames.add(metaData.getColumnName(column));
+	        columnNames_public.add(metaData.getColumnName(column));
 	    }
 	    if (tipo_tabla.equals("contacto") || tipo_tabla.equals("cliente"))
 	    	columnNames.add("Twitter");
@@ -406,6 +486,22 @@ public class vistaDeTabla extends JFrame {
 
 	    return new DefaultTableModel(data, columnNames);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getActionCommand().equals("nueva_query")){
+			Object obj = new buildQueryGUI(columnNames_public,tipo_tabla).showDialog();
+			if (obj == null){
+				JOptionPane.showMessageDialog(null, "Filtro asignado no valido");
+				return;
+			}
+			table =null;
+			algo((String) obj);
+			
+			
+		}
 	}
 	
 	
